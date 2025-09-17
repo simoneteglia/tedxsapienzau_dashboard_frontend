@@ -1,0 +1,32 @@
+.sidebar {
+  box-sizing: border-box;
+  max-width: 18vw;
+  width: 18vw;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+  gap: 15px;
+  flex: 0 0 auto;
+}
+
+.sidebar-button {
+  width: 90%;
+  color: black;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 15px;
+  text-decoration: none;
+}
+
+.selected {
+  background-color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
