@@ -1,6 +1,6 @@
 {
   "CONNECTION": {
-    "ENDPOINT": "http://localhost:5500"
+    "ENDPOINT": "https://tedxsapienzau-dashboard-backend.onrender.com"
   },
   "COLORS": {
     "LIGHTGRAY": "rgb(245, 247, 249)"
