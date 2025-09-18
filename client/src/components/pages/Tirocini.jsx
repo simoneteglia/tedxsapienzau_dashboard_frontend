@@ -10,7 +10,7 @@ import global from "../../global.json";
 
 export default function Tirocini() {
   const [withTirocinio, setWithTirocinio] = useState([]);
-  const [isAdding, setIsAdding] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
   const [names, setNames] = useState([]);
   const [selectedVolunteer, setSelectedVolunteer] = useState("");
 
