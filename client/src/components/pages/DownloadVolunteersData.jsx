@@ -129,7 +129,11 @@ export default function DownloadVolunteersData() {
     const data = filtered.map((v) => {
       const obj = {};
       selectedFields.forEach((field) => {
-        obj[field] = v[field] || "";
+        let elem = "";
+        if (v[field] !== undefined) {
+          elem = v[field].trim();
+        }
+        obj[field] = elem;
       });
       return obj;
     });
