@@ -46,7 +46,7 @@ function AddVolunteers() {
   useEffect(() => {
     const fetchLastId = async () => {
       try {
-        const response = await fetch("http://localhost:5500/volunteers");
+        const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`);
         const result = await response.json();
         if (response.ok) {
           const volunteers = result.volunteers;
@@ -141,7 +141,7 @@ function AddVolunteers() {
     }
 
     try {
-      const response = await fetch("http://localhost:5500/volunteer", {
+      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

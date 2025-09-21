@@ -360,6 +360,20 @@ export default function VolunteerDetails() {
       >
         Modifica
       </button>
+      
+      <button
+        style={{
+          backgroundColor: "#1E90FF", // different color to distinguish
+          color: "white",
+          padding: "10px 15px",
+          borderRadius: "5px",
+          cursor: "pointer",
+          marginRight: 8,
+        }}
+        onClick={() => window.open(volunteer.documento_di_identità, "_blank")}
+      >
+        Documento
+      </button>
 
       <button
         style={{

@@ -4,15 +4,36 @@ import "../../assets/styles/login.css";
 import Logo from "../../assets/images/Logo_colorato.svg";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents the page from reloading
-    // Add your form submission logic here (e.g., API call)
-    console.log("Email:", email);
-    console.log("Password:", password);
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch(`${global.CONNECTION.ENDPOINT}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("refresh_token", data.refresh_token);
+
+      window.location.href = "/";
+    } else {
+      alert(data.message);
+    }
+  } catch (error) {
+    console.error("Error logging in:", error);
+    alert("Login failed");
+  }
+};
+
 
   return (
     <div className="login-container">
@@ -22,10 +43,10 @@ export default function Login() {
         </div>
         <form className="login-form" onSubmit={handleSubmit}>
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="username"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
           <input
