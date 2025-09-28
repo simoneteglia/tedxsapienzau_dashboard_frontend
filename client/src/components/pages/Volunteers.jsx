@@ -22,6 +22,7 @@ export default function Volunteers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTeam, setSelectedTeam] = useState("");
   const [showExSocio, setShowExSocio] = useState(false);
+  const token = localStorage.getItem("access_token");
 
   const teamNames = [
     "BOARD",
@@ -49,7 +50,13 @@ export default function Volunteers() {
 
   useEffect(() => {
     const fetchVolunteers = async () => {
-      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`);
+      const response = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
       const data = await response.json();
       try {
         if (data.volunteers && data.volunteers.length > 0) {

@@ -13,7 +13,7 @@ export default function VolunteerEdit() {
     const fetchVolunteer = async () => {
       try {
         const response = await fetch(
-          `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`
+          `http://localhost:5500/volunteer?id=${id}`
         );
         const data = await response.json();
         if (data.volunteer) {
@@ -40,7 +40,7 @@ export default function VolunteerEdit() {
     console.log(volunteer);
     try {
       const response = await fetch(
-        `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
+        `http://localhost:5500/volunteer?id=${id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

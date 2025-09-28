@@ -13,6 +13,7 @@ export default function Tirocini() {
   const [isAdding, setIsAdding] = useState(false);
   const [names, setNames] = useState([]);
   const [selectedVolunteer, setSelectedVolunteer] = useState("");
+  const token = localStorage.getItem("access_token");
 
   useEffect(() => {
     console.log(selectedVolunteer);
@@ -20,7 +21,13 @@ export default function Tirocini() {
 
   useEffect(() => {
     const fetchVolunteers = async () => {
-      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`);
+      const response = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
       const data = await response.json();
       try {
         if (data.volunteers && data.volunteers.length > 0) {

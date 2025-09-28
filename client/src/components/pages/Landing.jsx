@@ -15,6 +15,8 @@ import {
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import VolunteersMap from "../components/VolunteersMap";
 
+const token = localStorage.getItem("access_token");
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -44,9 +46,13 @@ export default function Landing() {
   useEffect(() => {
     const fetchVolunteers = async () => {
       try {
-        const response = await fetch(
-          `${global.CONNECTION.ENDPOINT}/volunteers`
-        );
+        const response = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
 
         if (data.volunteers && data.volunteers.length > 0) {

@@ -4,6 +4,8 @@ import Papa from "papaparse";
 import * as XLSX from "xlsx"; // Excel export
 import global from "../../global.json";
 
+const token = localStorage.getItem("access_token");
+
 export default function DownloadVolunteersData() {
   // define sections and their fields
   const sections = {
@@ -76,7 +78,13 @@ export default function DownloadVolunteersData() {
 
   useEffect(() => {
     const fetchVolunteers = async () => {
-      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`);
+      const response = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
       const data = await response.json();
       try {
         if (data.volunteers && data.volunteers.length > 0) {

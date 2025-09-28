@@ -11,7 +11,7 @@ export default function Login() {
   e.preventDefault();
 
   try {
-    const response = await fetch(`${global.CONNECTION.ENDPOINT}/login`, {
+    const response = await fetch(`http://localhost:5500/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

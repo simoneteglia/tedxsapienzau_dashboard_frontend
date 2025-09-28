@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+const token = localStorage.getItem("access_token");
 
 function AddVolunteers() {
   const [formData, setFormData] = useState({
@@ -46,7 +47,13 @@ function AddVolunteers() {
   useEffect(() => {
     const fetchLastId = async () => {
       try {
-        const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`);
+        const response = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const result = await response.json();
         if (response.ok) {
           const volunteers = result.volunteers;
@@ -141,7 +148,7 @@ function AddVolunteers() {
     }
 
     try {
-      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteer`, {
+      const response = await fetch(`http://localhost:5500/volunteer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

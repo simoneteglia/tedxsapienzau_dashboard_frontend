@@ -9,11 +9,18 @@ export default function VolunteersMap() {
   const [volunteers, setVolunteers] = useState([]);
   const [mode, setMode] = useState("choropleth"); // "choropleth" , "bubble"
   const [locationType, setLocationType] = useState("nascita"); // "nascita" , "residenza"
+  const token = localStorage.getItem("access_token");
 
   useEffect(() => {
     const fetchVolunteers = async () => {
       try {
-        const res = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`);
+        const res = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await res.json();
         if (data.volunteers) setVolunteers(data.volunteers);
       } catch (err) {

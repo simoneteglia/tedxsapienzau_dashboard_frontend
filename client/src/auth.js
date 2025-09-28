@@ -23,9 +23,9 @@ export async function getAccessToken() {
 
 export async function refreshAccessToken(refreshToken) {
   try {
-    const res = await fetch(`${global.CONNECTION.ENDPOINT}/refresh`, {
+    const res = await fetch(`http://localhost:5500/refresh`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", },
       body: JSON.stringify({ refresh_token: refreshToken }),
     });
 

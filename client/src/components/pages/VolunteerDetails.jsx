@@ -18,7 +18,7 @@ export default function VolunteerDetails() {
     const fetchVolunteer = async () => {
       try {
         const res = await fetch(
-          `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`
+          `http://localhost:5500/volunteer?id=${id}`
         );
         const data = await res.json();
         if (data.volunteer) setVolunteer(data.volunteer);
@@ -37,7 +37,7 @@ export default function VolunteerDetails() {
           : `matricola=${volunteer.matricola ?? id}`;
 
       const res = await fetch(
-        `${global.CONNECTION.ENDPOINT}/disable_volunteer?${query}`,
+        `http://localhost:5500/disable_volunteer?${query}`,
         { method: "PUT" }
       );
       const data = await res.json();
