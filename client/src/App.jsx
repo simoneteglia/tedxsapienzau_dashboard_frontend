@@ -20,7 +20,6 @@ import global from "./global.json";
 import Tirocini from "./components/pages/Tirocini";
 //kpTRoLqaNC0U68YU
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,63 +36,64 @@ const router = createBrowserRouter([
       },
       {
         path: "/home",
-        element:(
+        element: (
           <ProtectedRoute>
-         <Landing />
-         </ProtectedRoute>),
+            <Landing />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/login",
         element: <Login />,
       },
       {
-  path: "/volunteers",
-  element: (
-    <ProtectedRoute>
-      <Volunteers />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/volunteer/:id",
-  element: (
-    <ProtectedRoute>
-      <VolunteerDetails />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/volunteer/edit/:id",
-  element: (
-    <ProtectedRoute>
-      <EditVolunteer />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/add-volunteer",
-  element: (
-    <ProtectedRoute>
-      <AddVolunteers />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/download-volunteers-data",
-  element: (
-    <ProtectedRoute>
-      <DownloadVolunteersData />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/tirocini",
-  element: (
-    <ProtectedRoute>
-      <Tirocini />
-    </ProtectedRoute>
-  ),
-},
+        path: "/volunteers",
+        element: (
+          <ProtectedRoute>
+            <Volunteers />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/volunteer/:id",
+        element: (
+          <ProtectedRoute>
+            <VolunteerDetails />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/volunteer/edit/:id",
+        element: (
+          <ProtectedRoute>
+            <EditVolunteer />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/add-volunteer",
+        element: (
+          <ProtectedRoute>
+            <AddVolunteers />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/download-volunteers-data",
+        element: (
+          <ProtectedRoute>
+            <DownloadVolunteersData />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/tirocini",
+        element: (
+          <ProtectedRoute>
+            <Tirocini />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);

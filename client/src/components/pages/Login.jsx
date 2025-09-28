@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import global from "../../global";
 import "../../assets/styles/login.css";
 import Logo from "../../assets/images/Logo_colorato.svg";
 
@@ -8,32 +9,32 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await fetch(`http://localhost:5500/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const response = await fetch(`${global.CONNECTION.ENDPOINT}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const data = await response.json();
-    if (data.success) {
-      localStorage.setItem("access_token", data.access_token);
-      localStorage.setItem("refresh_token", data.refresh_token);
+      const data = await response.json();
+      if (data.success) {
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
 
-      window.location.href = "/";
-    } else {
-      alert(data.message);
+        window.location.href = "/";
+      } else {
+        console.log("Login failed:", data.message);
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      alert("Login failed");
     }
-  } catch (error) {
-    console.error("Error logging in:", error);
-    alert("Login failed");
-  }
-};
-
+  };
 
   return (
     <div className="login-container">
@@ -48,6 +49,7 @@ export default function Login() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            style={{ backgroundColor: "white" }}
           />
           <input
             type="password"
@@ -55,6 +57,7 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{ backgroundColor: "white" }}
           />
           <button type="submit">Login</button>
         </form>
