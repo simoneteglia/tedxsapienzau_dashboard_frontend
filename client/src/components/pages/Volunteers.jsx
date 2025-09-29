@@ -50,13 +50,13 @@ export default function Volunteers() {
 
   useEffect(() => {
     const fetchVolunteers = async () => {
-      const response = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       try {
         if (data.volunteers && data.volunteers.length > 0) {

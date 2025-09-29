@@ -46,13 +46,16 @@ export default function Landing() {
   useEffect(() => {
     const fetchVolunteers = async () => {
       try {
-        const response = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${global.CONNECTION.ENDPOINT}/volunteers`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await response.json();
 
         if (data.volunteers && data.volunteers.length > 0) {
@@ -436,6 +439,15 @@ export default function Landing() {
               )}
               options={{
                 indexAxis: "y",
+                scales: {
+                  x: {
+                    min: 0,
+                    max: 12,
+                    ticks: {
+                      stepSize: 1,
+                    },
+                  },
+                },
                 plugins: {
                   datalabels: {
                     font: {

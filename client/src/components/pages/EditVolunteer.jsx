@@ -7,13 +7,21 @@ export default function VolunteerEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [volunteer, setVolunteer] = useState({});
-  
+  const token = localStorage.getItem("access_token");
 
   useEffect(() => {
     const fetchVolunteer = async () => {
+      console.log("Fetching volunteer with id:", id);
       try {
         const response = await fetch(
-          `http://localhost:5500/volunteer?id=${id}`
+          `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const data = await response.json();
         if (data.volunteer) {
@@ -40,10 +48,14 @@ export default function VolunteerEdit() {
     console.log(volunteer);
     try {
       const response = await fetch(
-        `http://localhost:5500/volunteer?id=${id}`,
+        `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+
           body: JSON.stringify(volunteer),
         }
       );
@@ -332,21 +344,21 @@ export default function VolunteerEdit() {
 
         {/* Sezione dimissione */}
         <label>
-  Ex Socio:
-  <select
-    name="ex_socio"
-    value={volunteer.ex_socio ? "SI" : "NO"}
-    onChange={(e) =>
-      setVolunteer({
-        ...volunteer,
-        ex_socio: e.target.value === "SI",
-      })
-    }
-  >
-    <option value="SI">Sì</option>
-    <option value="NO">No</option>
-  </select>
-</label>
+          Ex Socio:
+          <select
+            name="ex_socio"
+            value={volunteer.ex_socio ? "SI" : "NO"}
+            onChange={(e) =>
+              setVolunteer({
+                ...volunteer,
+                ex_socio: e.target.value === "SI",
+              })
+            }
+          >
+            <option value="SI">Sì</option>
+            <option value="NO">No</option>
+          </select>
+        </label>
         <label>
           Data Dimissione:
           <input

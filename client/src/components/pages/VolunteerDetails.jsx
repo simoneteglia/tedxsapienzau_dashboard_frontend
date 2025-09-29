@@ -13,12 +13,20 @@ export default function VolunteerDetails() {
   const [volunteer, setVolunteer] = useState({});
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem("access_token");
 
   useEffect(() => {
     const fetchVolunteer = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5500/volunteer?id=${id}`
+          `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const data = await res.json();
         if (data.volunteer) setVolunteer(data.volunteer);
@@ -37,7 +45,7 @@ export default function VolunteerDetails() {
           : `matricola=${volunteer.matricola ?? id}`;
 
       const res = await fetch(
-        `http://localhost:5500/disable_volunteer?${query}`,
+        `${global.CONNECTION.ENDPOINT}/disable_volunteer?${query}`,
         { method: "PUT" }
       );
       const data = await res.json();
@@ -360,7 +368,7 @@ export default function VolunteerDetails() {
       >
         Modifica
       </button>
-      
+
       <button
         style={{
           backgroundColor: "#1E90FF", // different color to distinguish

@@ -18,7 +18,7 @@ export default function Sidebar() {
     console.log(location);
 
     buttons.forEach((button) => {
-      console.log(button.id, "|", currentUrl.split("/")[1]);
+      // console.log(button.id, "|", currentUrl.split("/")[1]);
       if (button.id === currentUrl.split("/")[1]) {
         button.classList.add("selected");
       } else {
