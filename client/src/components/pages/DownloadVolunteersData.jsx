@@ -78,13 +78,13 @@ export default function DownloadVolunteersData() {
 
   useEffect(() => {
     const fetchVolunteers = async () => {
-      const response = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       try {
         if (data.volunteers && data.volunteers.length > 0) {
@@ -139,7 +139,11 @@ export default function DownloadVolunteersData() {
       selectedFields.forEach((field) => {
         let elem = "";
         if (v[field] !== undefined) {
-          elem = v[field].trim();
+          try {
+            elem = v[field].trim();
+          } catch {
+            elem = v[field];
+          }
         }
         obj[field] = elem;
       });

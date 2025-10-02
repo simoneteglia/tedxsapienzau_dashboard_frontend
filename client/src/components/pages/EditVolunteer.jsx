@@ -55,7 +55,6 @@ export default function VolunteerEdit() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-
           body: JSON.stringify(volunteer),
         }
       );

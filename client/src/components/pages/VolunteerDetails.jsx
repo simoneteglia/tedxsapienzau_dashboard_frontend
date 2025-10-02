@@ -46,12 +46,13 @@ export default function VolunteerDetails() {
 
       const res = await fetch(
         `${global.CONNECTION.ENDPOINT}/disable_volunteer?${query}`,
-        { method: "PUT",
+        {
+          method: "PUT",
           headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-         }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await res.json();
 
