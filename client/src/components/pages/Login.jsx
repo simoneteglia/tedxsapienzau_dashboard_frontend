@@ -49,7 +49,7 @@ export default function Login() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            style={{ backgroundColor: "white" }}
+            style={{ backgroundColor: "white", color: "black" }}
           />
           <input
             type="password"
@@ -57,9 +57,12 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ backgroundColor: "white" }}
+            style={{ backgroundColor: "white", color: "black" }}
           />
           <button type="submit">Login</button>
+          <p style={{ marginTop: "10px", fontSize: "14px", color: "#cc0000" }}>
+          ⚠️ Attenzione: il login potrebbe richiedere fino a 1 minuto.
+        </p>
         </form>
       </div>
     </div>

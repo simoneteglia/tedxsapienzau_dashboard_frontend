@@ -148,10 +148,11 @@ function AddVolunteers() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5500/volunteer`, {
+      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
