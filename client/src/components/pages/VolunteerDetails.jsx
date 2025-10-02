@@ -17,22 +17,28 @@ export default function VolunteerDetails() {
 
   useEffect(() => {
     const fetchVolunteer = async () => {
-      try {
-        const res = await fetch(
-          `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await res.json();
-        if (data.volunteer) setVolunteer(data.volunteer);
-      } catch (e) {
-        console.error("Error fetching volunteer", e);
-      }
+      const res = await fetch(
+  `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
+  {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
+
+const text = await res.text();   // <- log raw response
+console.log("Status:", res.status);
+console.log("Raw response:", text);
+
+try {
+  const data = JSON.parse(text);
+  if (data.volunteer) setVolunteer(data.volunteer);
+} catch (err) {
+  console.error("Failed to parse JSON", err);
+}
+
     };
     fetchVolunteer();
   }, [id]);
