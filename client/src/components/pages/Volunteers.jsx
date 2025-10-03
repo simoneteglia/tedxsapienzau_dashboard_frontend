@@ -183,7 +183,9 @@ export default function Volunteers() {
                 className="board-card"
                 style={{
                   background:
-                    volunteer.team === "BOARD"
+                    volunteer.ex_socio === true || volunteer.ex_socio === "Si"
+                      ? "linear-gradient(135deg, #ff9999 20%, #ff3333 80%)"
+                      : volunteer.team === "BOARD"
                       ? "linear-gradient(to right, rgba(255, 255, 255, 0.4) 0 100%), url(/gradient-bg3.jpg)"
                       : `radial-gradient(circle at bottom right, ${
                           teamColors[volunteer.team]
@@ -192,9 +194,19 @@ export default function Volunteers() {
                   height: "150px",
                   borderRadius: "20px",
                   backgroundSize:
-                    volunteer.team === "BOARD" ? "160%" : "initial",
+                    volunteer.team === "BOARD" &&
+                    !(
+                      volunteer.ex_socio === true || volunteer.ex_socio === "Si"
+                    )
+                      ? "160%"
+                      : "initial",
                   backgroundPosition:
-                    volunteer.team === "BOARD" ? "0% 25%" : "center",
+                    volunteer.team === "BOARD" &&
+                    !(
+                      volunteer.ex_socio === true || volunteer.ex_socio === "Si"
+                    )
+                      ? "0% 25%"
+                      : "center",
                 }}
               >
                 <CardContent>
