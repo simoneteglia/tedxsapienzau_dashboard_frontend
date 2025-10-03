@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-
 import global from "../../global";
 import "../../assets/styles/login.css";
 import Logo from "../../assets/images/Logo_colorato.svg";
+import ClipLoader from "react-spinners/ClipLoader"; // spinner
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await fetch(`${global.CONNECTION.ENDPOINT}/login`, {
@@ -29,10 +31,12 @@ export default function Login() {
       } else {
         console.log("Login failed:", data.message);
         alert(data.message);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error logging in:", error);
       alert("Login failed");
+      setLoading(false);
     }
   };
 
@@ -50,6 +54,7 @@ export default function Login() {
             onChange={(e) => setUsername(e.target.value)}
             required
             style={{ backgroundColor: "white", color: "black" }}
+            disabled={loading}
           />
           <input
             type="password"
@@ -58,11 +63,39 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
             style={{ backgroundColor: "white", color: "black" }}
+            disabled={loading}
           />
-          <button type="submit">Login</button>
+
+          {loading ? (
+            <button
+              type="button"
+              disabled
+              style={{
+                background: "#f0f0f0",
+                border: "1px solid #ccc",
+                cursor: "not-allowed",
+                padding: "10px 20px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                fontSize: "14px",
+                fontWeight: "500",
+                color: "#333", // keep default button text color
+              }}
+            >
+              <ClipLoader size={18} color="#333" />
+              <span className="loading-text">Caricamento...</span>
+            </button>
+          ) : (
+            <button type="submit">Login</button>
+          )}
+
           <p style={{ marginTop: "10px", fontSize: "14px", color: "#cc0000" }}>
-          ⚠️ Attenzione: il login potrebbe richiedere fino a 1 minuto.
-        </p>
+            {loading
+              ? "Stiamo svegliando il server, dacci un attimo"
+              : "⚠️ Attenzione: il login potrebbe richiedere fino a 1 minuto."}
+          </p>
         </form>
       </div>
     </div>
