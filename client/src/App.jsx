@@ -23,7 +23,7 @@ import Tirocini from "./components/pages/Tirocini";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomeManager />,
+    element: <SidebarLayout />,
     errorElement: (
       <>
         <p>Error</p>
@@ -41,10 +41,6 @@ const router = createBrowserRouter([
             <Landing />
           </ProtectedRoute>
         ),
-      },
-      {
-        path: "/login",
-        element: <Login />,
       },
       {
         path: "/volunteers",
@@ -96,9 +92,13 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    element: <SimpleLayout />,
+    children: [{ path: "/login", element: <Login /> }],
+  },
 ]);
 
-function HomeManager() {
+function SidebarLayout() {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -130,6 +130,10 @@ function HomeManager() {
       </div>
     </div>
   );
+}
+
+function SimpleLayout() {
+  return <Outlet />;
 }
 
 function App() {
