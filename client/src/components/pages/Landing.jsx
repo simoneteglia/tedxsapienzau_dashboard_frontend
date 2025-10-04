@@ -64,9 +64,7 @@ export default function Landing() {
           const years = [
             ...new Set(
               data.volunteers.map((v) =>
-                v.data_ingresso_associazione
-                  ? v.data_ingresso_associazione.split("-")[0]
-                  : "N/A"
+                v.date_of_joining ? v.date_of_joining.split("-")[0] : "N/A"
               )
             ),
           ].sort();
@@ -91,15 +89,13 @@ export default function Landing() {
 
     if (!showExSocio) {
       filteredVolunteers = filteredVolunteers.filter(
-        (v) => v.ex_socio !== true && v.ex_socio !== "Si"
+        (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
       );
     }
 
     filteredVolunteers = filteredVolunteers.filter((volunteer) => {
       if (selectedYear === "all") return true;
-      return (
-        parseInt(volunteer.data_ingresso_associazione) >= parseInt(selectedYear)
-      );
+      return parseInt(volunteer.date_of_joining) >= parseInt(selectedYear);
     });
 
     const facultyCounts = {};
@@ -111,29 +107,29 @@ export default function Landing() {
     const isIscrittoCounts = {};
 
     filteredVolunteers.forEach((volunteer) => {
-      const faculty = volunteer["facoltà_di_appartenenza"] || "Unknown";
+      const faculty = volunteer["faculty_name"] || "Unknown";
       facultyCounts[faculty] = (facultyCounts[faculty] || 0) + 1;
 
       const team = volunteer["team"] || "Unknown";
       teamCounts[team] = (teamCounts[team] || 0) + 1;
 
-      const degree = volunteer["tipologia_di_corso"] || "Unknown";
+      const degree = volunteer["course_type"] || "Unknown";
       degreeCounts[degree] = (degreeCounts[degree] || 0) + 1;
 
-      const matriculation = volunteer["anno_di_iscrizione"] || "Unknown";
+      const matriculation = volunteer["enrollment_year"] || "Unknown";
       matriculationCounts[matriculation] =
         (matriculationCounts[matriculation] || 0) + 1;
 
-      const gender = volunteer["genere"] || "N/A";
+      const gender = volunteer["gender"] || "N/A";
       genderCounts[gender] = (genderCounts[gender] || 0) + 1;
 
-      const isIscritto = volunteer["sei_iscritto_in_sapienza?"] || "Unknown";
+      const isIscritto = volunteer["is_enrolled_in_sapienza"] || "Unknown";
       isIscrittoCounts[isIscritto] = (isIscrittoCounts[isIscritto] || 0) + 1;
 
       // compute volunteer age
-      if (volunteer["data_di_nascita"]) {
+      if (volunteer["date_of_birth"]) {
         const birthYear = parseInt(
-          volunteer["data_di_nascita"].split("/")[2], //data_di_nascita = DD/MM/YYYY
+          volunteer["date_of_birth"].split("/")[2], //data_di_nascita = DD/MM/YYYY
           10
         );
         if (!isNaN(birthYear)) {
@@ -166,7 +162,6 @@ export default function Landing() {
     setGenderData(genderCounts);
     setAgeData(ageCounts);
     setIsIscrittoData(isIscrittoCounts);
-    console.log(isIscrittoCounts);
   }, [selectedYear, allVolunteers, showExSocio]);
 
   const generateChartData = (data, label, sortByLabel = false) => {

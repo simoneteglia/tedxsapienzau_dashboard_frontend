@@ -1,45 +1,47 @@
 import React, { useState, useEffect } from "react";
 const token = localStorage.getItem("access_token");
 
+import global from "../../global.json";
+
 function AddVolunteers() {
   const [formData, setFormData] = useState({
     id: "",
     team: "",
     status: "",
     subleader: "",
-    cognome: "",
-    nome: "",
-    genere: "",
-    ex_socio: "",
-    data_dimissione: "",
-    note: "",
-    telefono: "",
-    email_personale: "",
-    data_di_nascita: "",
-    luogo_di_nascita: "",
-    codice_fiscale: "",
-    luogo_di_residenza: "",
-    indirizzo_di_domicilio: "",
-    iscritto_in_sapienza: "",
-    matricola: "",
-    email_istituzionale: "",
-    status_accademico: "",
-    facolta_di_appartenenza: "",
+    surname: "",
+    name: "",
+    gender: "",
+    is_ex_member: "",
+    resignation_date: "",
+    notes: "",
+    phone_number: "",
+    personal_email: "",
+    date_of_birth: "",
+    place_of_birth: "",
+    fiscal_code: "",
+    place_of_residence: "",
+    address_of_domicile: "",
+    is_enrolled_in_sapienza: "",
+    student_id: "",
+    institutional_email: "",
+    academic_status: "",
+    faculty_name: "",
     dipartimento: "",
-    tipologia: "",
-    corso_di_laurea: "",
-    anno_di_iscrizione: "",
-    erasmus_o_estero: "",
-    associazione_esterna: "",
-    nome_associazione: "",
-    data_ingresso_associazione: "",
-    esigenze_alimentari: "",
-    taglia_tshirt: "",
-    tshirt_presa: "",
-    documenti_socio: "",
-    tipo_di_documento: "",
-    numero_del_documento: "",
-    scadenza_documento: "",
+    course_type: "",
+    degree_name: "",
+    enrollment_year: "",
+    erasmus_status: "",
+    is_in_external_association: "",
+    external_association_name: "",
+    date_of_joining: "",
+    dietary_requirements: "",
+    tshirt_size: "",
+    has_taken_tshirt: "",
+    id_document_link: "",
+    id_document_type: "",
+    id_document_number: "",
+    id_document_expiry_date: "",
   });
 
   const [message, setMessage] = useState("");
@@ -47,13 +49,16 @@ function AddVolunteers() {
   useEffect(() => {
     const fetchLastId = async () => {
       try {
-        const response = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${global.CONNECTION.ENDPOINT}/volunteers`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const result = await response.json();
         if (response.ok) {
           const volunteers = result.volunteers;
@@ -95,39 +100,43 @@ function AddVolunteers() {
   const validateForm = () => {
     // Verifica che i campi obbligatori siano compilati
     const requiredFields = [
+      "_id",
       "team",
       "status",
       "subleader",
-      "cognome",
-      "nome",
-      "genere",
-      "ex_socio",
-      "telefono",
-      "email_personale",
-      "data_di_nascita",
-      "luogo_di_nascita",
-      "codice_fiscale",
-      "luogo_di_residenza",
-      "indirizzo_di_domicilio",
-      "iscritto_in_sapienza",
-      "matricola",
-      "email_istituzionale",
-      "status_accademico",
-      "facolta_di_appartenenza",
+      "surname",
+      "name",
+      "gender",
+      "is_ex_member",
+      "resignation_date",
+      "notes",
+      "phone_number",
+      "personal_email",
+      "date_of_birth",
+      "place_of_birth",
+      "fiscal_code",
+      "place_of_residence",
+      "address_of_domicile",
+      "is_enrolled_in_sapienza",
+      "student_id",
+      "institutional_email",
+      "academic_status",
+      "faculty_name",
       "dipartimento",
-      "tipologia",
-      "corso_di_laurea",
-      "anno_di_iscrizione",
-      "erasmus_o_estero",
-      "associazione_esterna",
-      "data_ingresso_associazione",
-      "esigenze_alimentari",
-      "taglia_tshirt",
-      "tshirt_presa",
-      "documenti_socio",
-      "tipo_di_documento",
-      "numero_del_documento",
-      "scadenza_documento",
+      "course_type",
+      "degree_name",
+      "enrollment_year",
+      "erasmus_status",
+      "is_in_external_association",
+      "external_association_name",
+      "date_of_joining",
+      "dietary_requirements",
+      "tshirt_size",
+      "has_taken_tshirt",
+      "id_document_link",
+      "id_document_type",
+      "id_document_number",
+      "id_document_expiry_date",
     ];
 
     for (let field of requiredFields) {
@@ -143,7 +152,7 @@ function AddVolunteers() {
     e.preventDefault();
     const errorMessage = validateForm();
     if (errorMessage) {
-      alert(errorMessage);  // Mostra il messaggio di errore
+      alert(errorMessage); // Mostra il messaggio di errore
       return;
     }
 
@@ -166,14 +175,14 @@ function AddVolunteers() {
             return acc;
           }, {}),
         }));
-        alert("Inserimento avvenuto con successo!");  // Dialog di successo
+        alert("Inserimento avvenuto con successo!"); // Dialog di successo
       } else {
         setMessage(result.message || "Failed to add volunteer.");
-        alert(result.message || "Failed to add volunteer.");  // Messaggio di errore
+        alert(result.message || "Failed to add volunteer."); // Messaggio di errore
       }
     } catch (error) {
       setMessage("Error submitting the form. Please try again.");
-      alert("Errore nell'invio del form. Riprova.");  // Messaggio di errore
+      alert("Errore nell'invio del form. Riprova."); // Messaggio di errore
     }
   };
 
@@ -182,79 +191,69 @@ function AddVolunteers() {
     team: "Team di appartenenza *",
     status: "Status *",
     subleader: "Subleader *",
-    cognome: "Cognome *",
-    nome: "Nome *",
-    genere: "Genere *",
-    ex_socio: "Ex socio *",
-    data_dimissione: "Data di dimissione",
-    note: "Note",
-    telefono: "Telefono *",
-    email_personale: "Email personale *",
-    data_di_nascita: "Data di nascita *",
-    luogo_di_nascita: "Luogo di nascita *",
-    codice_fiscale: "Codice fiscale *",
-    luogo_di_residenza: "Luogo di residenza *",
-    indirizzo_di_domicilio: "Indirizzo di domicilio *",
-    iscritto_in_sapienza: "Sei iscritto in Sapienza? *",
-    matricola: "Matricola *",
-    email_istituzionale: "Email istituzionale *",
-    status_accademico: "Status accademico *",
-    facolta_di_appartenenza: "Facoltà di appartenenza * ",
+    surname: "Cognome *",
+    name: "Nome *",
+    gender: "Genere *",
+    is_ex_member: "Ex socio *",
+    resignation_date: "Data di dimissione",
+    notes: "Note",
+    phone_number: "Telefono *",
+    personal_email: "Email personale *",
+    date_of_birth: "Data di nascita *",
+    place_of_birth: "Luogo di nascita *",
+    fiscal_code: "Codice fiscale *",
+    place_of_residence: "Luogo di residenza *",
+    address_of_domicile: "Indirizzo di domicilio *",
+    is_enrolled_in_sapienza: "Sei iscritto in Sapienza? *",
+    student_id: "Matricola *",
+    institutional_email: "Email istituzionale *",
+    academic_status: "Status accademico *",
+    faculty_name: "Facoltà di appartenenza * ",
     dipartimento: "Dipartimento *",
-    tipologia: "Tipologia *",
-    corso_di_laurea: "Corso *",
-    anno_di_iscrizione: "Anno di iscrizione *",
-    erasmus_o_estero: "Erasmus o periodo all'estero * ",
-    associazione_esterna: "Associazione esterna *",
-    nome_associazione: "Nome associazione",
-    data_ingresso_associazione: "Data di ingresso in associazione *",
-    esigenze_alimentari: "Esigenze alimentari *",
-    taglia_tshirt: "Taglia T-Shirt *",
-    tshirt_presa: "T-Shirt presa? *",
-    documenti_socio: "Documenti socio *",
-    tipo_di_documento: "Tipo di documento *",
-    numero_del_documento: "Numero del documento *",
-    scadenza_documento: "Scadenza documento *",
+    course_type: "Tipologia *",
+    degree_name: "Corso *",
+    enrollment_year: "Anno di iscrizione *",
+    erasmus_status: "Erasmus o periodo all'estero * ",
+    is_in_external_association: "Associazione esterna *",
+    external_association_name: "Nome associazione",
+    date_of_joining: "Data di ingresso in associazione *",
+    dietary_requirements: "Esigenze alimentari *",
+    tshirt_size: "Taglia T-Shirt *",
+    has_taken_tshirt: "T-Shirt presa? *",
+    id_document_link: "Documenti socio *",
+    id_document_type: "Tipo di documento *",
+    id_document_number: "Numero del documento *",
+    id_document_expiry_date: "Scadenza documento *",
   };
 
   const dropdownOptions = {
     team: ["Board", "PEM", "IT", "SEC", "ERS", "CEM", "LA", "HRA", "DEX"],
     status: ["Socio", "Supporter"],
     subleader: ["Si", "No"],
-    genere: ["F", "M", "Altro", "Preferisco non specificare"],
-    ex_socio: ["Si", "No"],
-    iscritto_in_sapienza: ["Si", "No", "Altro"],
-    status_accademico: ["Studente", "Laureato", "Dottorando", "Altro"],
-    facolta_di_appartenenza: [
-      "Architettura",
-      "Economia",
-      "Farmacia e medicina",
-      "Giurisprudenza",
-      "Ingegneria civile e industriale",
-      "Ingegneria dell'informazione, informatica e statistica",
-      "Lettere e filosofia",
-      "Medicina e odontoiatria",
-      "Medicina e psicologia",
-      "Scienze matematiche, fisiche e naturali",
-      "Scienze politiche sociologia comunicazione",
-      "Scuola di Ingegneria aerospaziale",
-    ],
-    tipologia: [
+    gender: ["F", "M", "Altro", "Preferisco non specificare"],
+    is_ex_member: ["Si", "No"],
+    is_enrolled_in_sapienza: ["Si", "No", "Altro"],
+    academic_status: ["Studente", "Laureato", "Dottorando", "Altro"],
+    faculty_name: global.FACULTIES,
+    degree_name: [
       "Laurea Triennale",
       "Laurea agistrale",
       "Laurea Ciclo Unico",
       "Dottorato",
       "Altro",
     ],
-    erasmus_o_estero: ["Lo farò", "Non lo farò"],
-    associazione_esterna: ["Si", "No"],
-    taglia_tshirt: ["XS", "S", "M", "L", "XL", "XXL"],
-    tshirt_presa: ["Si", "No"],
-    tipo_di_documento: ["Carta d'identità", "Patente", "Passaporto", "Altro"],
+    erasmus_status: ["Lo farò", "Non lo farò"],
+    is_in_external_association: ["Si", "No"],
+    tshirt_size: ["XS", "S", "M", "L", "XL", "XXL"],
+    has_taken_tshirt: ["Si", "No"],
+    id_document_type: ["Carta d'identità", "Patente", "Passaporto", "Altro"],
   };
 
   return (
-    <div className="landing-main-container" style={{ padding: "20px", color: "#333" }}>
+    <div
+      className="landing-main-container"
+      style={{ padding: "20px", color: "#333" }}
+    >
       <h1 className="volunteers-title">Aggiungi Volontario</h1>
       <form
         onSubmit={handleSubmit}
@@ -271,7 +270,10 @@ function AddVolunteers() {
         {Object.keys(formData).map((key) =>
           dropdownOptions[key] ? (
             <div key={key} style={{ marginBottom: "1rem" }}>
-              <label htmlFor={key} style={{ display: "block", fontWeight: "bold" }}>
+              <label
+                htmlFor={key}
+                style={{ display: "block", fontWeight: "bold" }}
+              >
                 {labels[key]}
               </label>
               <select
@@ -298,11 +300,20 @@ function AddVolunteers() {
             </div>
           ) : (
             <div key={key} style={{ marginBottom: "1rem" }}>
-              <label htmlFor={key} style={{ display: "block", fontWeight: "bold" }}>
+              <label
+                htmlFor={key}
+                style={{ display: "block", fontWeight: "bold" }}
+              >
                 {labels[key]}
               </label>
               <input
-                type={key === "data_di_nascita" || key === "data_dimissione" || key === "scadenza_documento" ? "date" : "text"}
+                type={
+                  key === "data_di_nascita" ||
+                  key === "data_dimissione" ||
+                  key === "scadenza_documento"
+                    ? "date"
+                    : "text"
+                }
                 id={key}
                 name={key}
                 value={formData[key]}

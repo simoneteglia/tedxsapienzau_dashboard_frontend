@@ -17,6 +17,7 @@ export default function VolunteerDetails() {
 
   useEffect(() => {
     const fetchVolunteer = async () => {
+      console.log("Fetching volunteer with id:", id);
       const res = await fetch(
         `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
         {
@@ -29,8 +30,8 @@ export default function VolunteerDetails() {
       );
 
       const text = await res.text(); // <- log raw response
-      console.log("Status:", res.status);
-      console.log("Raw response:", text);
+      // console.log("Status:", res.status);
+      // console.log("Raw response:", text);
 
       try {
         const data = JSON.parse(text);
@@ -47,7 +48,7 @@ export default function VolunteerDetails() {
       const query =
         volunteer?.id != null
           ? `id=${volunteer.id}`
-          : `matricola=${volunteer.matricola ?? id}`;
+          : `student_id=${volunteer.student_id ?? id}`;
 
       const res = await fetch(
         `${global.CONNECTION.ENDPOINT}/disable_volunteer?${query}`,
@@ -131,7 +132,7 @@ export default function VolunteerDetails() {
 
         <div style={{ flex: 2, padding: "20px" }}>
           <h2 style={{ margin: "0" }}>
-            {volunteer.nome} {volunteer.cognome}
+            {volunteer.name} {volunteer.surname}
             {volunteer.subleader === "Si" && (
               <label
                 style={{
@@ -156,7 +157,7 @@ export default function VolunteerDetails() {
         </div>
 
         <div style={{ flex: 1, padding: "20px" }}>
-          {volunteer.ex_socio === "Si" && (
+          {volunteer.is_ex_member === "Si" && (
             <div
               style={{
                 backgroundColor: "rgba(246, 71,71, 0.8)",
@@ -167,11 +168,11 @@ export default function VolunteerDetails() {
               }}
             >
               <p>
-                <strong>Ex Socio:</strong> {volunteer.ex_socio || "N/A"}
+                <strong>Ex Socio:</strong> {volunteer.is_ex_member || "N/A"}
               </p>
               <p>
                 <strong>Data Dimissione:</strong>{" "}
-                {volunteer.data_dimissione || "N/A"}
+                {volunteer.resignation_date || "N/A"}
               </p>
             </div>
           )}
@@ -186,30 +187,30 @@ export default function VolunteerDetails() {
         Informazioni Personali
       </h3>
       <p>
-        <strong>Genere:</strong> {volunteer.genere || "N/A"}
+        <strong>Genere:</strong> {volunteer.gender || "N/A"}
       </p>
       <p>
-        <strong>Telefono:</strong> {volunteer.telefono || "N/A"}
+        <strong>Telefono:</strong> {volunteer.phone_number || "N/A"}
       </p>
       <p>
-        <strong>Email Personale:</strong> {volunteer.email_personale || "N/A"}
+        <strong>Email Personale:</strong> {volunteer.personal_email || "N/A"}
       </p>
       <p>
-        <strong>Data di Nascita:</strong> {volunteer.data_di_nascita || "N/A"}
+        <strong>Data di Nascita:</strong> {volunteer.date_of_birth || "N/A"}
       </p>
       <p>
-        <strong>Luogo di Nascita:</strong> {volunteer.luogo_di_nascita || "N/A"}
+        <strong>Luogo di Nascita:</strong> {volunteer.place_of_birth || "N/A"}
       </p>
       <p>
-        <strong>Codice Fiscale:</strong> {volunteer.codice_fiscale || "N/A"}
+        <strong>Codice Fiscale:</strong> {volunteer.fiscal_code || "N/A"}
       </p>
       <p>
         <strong>Luogo di Residenza:</strong>{" "}
-        {volunteer.luogo_di_residenza || "N/A"}
+        {volunteer.place_of_residence || "N/A"}
       </p>
       <p>
         <strong>Indirizzo di Domicilio:</strong>{" "}
-        {volunteer.indirizzo_di_domicilio || "N/A"}
+        {volunteer.address_of_domicile || "N/A"}
       </p>
       <hr />
       <h3
@@ -221,41 +222,40 @@ export default function VolunteerDetails() {
       </h3>
       <p>
         <strong>Sei iscritto in Sapienza?</strong>{" "}
-        {volunteer.iscritto_in_sapienza || "N/A"}
+        {volunteer.is_enrolled_in_sapienza || "N/A"}
       </p>
       <p>
-        <strong>Matricola:</strong> {volunteer.matricola || "N/A"}
+        <strong>Matricola:</strong> {volunteer.student_id || "N/A"}
       </p>
       <p>
         <strong>Email Istituzionale:</strong>{" "}
-        {volunteer.email_istituzionale || "N/A"}
+        {volunteer.institutional_email || "N/A"}
       </p>
       <p>
-        <strong>Status Accademico:</strong>{" "}
-        {volunteer.status_accademico || "N/A"}
+        <strong>Status Accademico:</strong> {volunteer.academic_status || "N/A"}
       </p>
 
       <p>
         <strong>Facoltà di Appartenenza:</strong>{" "}
-        {volunteer.facolta_di_appartenenza || "N/A"}
+        {volunteer.faculty_name || "N/A"}
       </p>
       <p>
         <strong>Dipartimento:</strong> {volunteer.dipartimento || "N/A"}
       </p>
       <p>
-        <strong>Tipologia:</strong> {volunteer.tipologia || "N/A"}
+        <strong>Tipologia:</strong> {volunteer.course_type || "N/A"}
       </p>
 
       <p>
-        <strong>Corso:</strong> {volunteer.corso_di_laurea || "N/A"}
+        <strong>Corso:</strong> {volunteer.degree_name || "N/A"}
       </p>
 
       <p>
         <strong>Anno di Iscrizione:</strong>{" "}
-        {volunteer.anno_di_iscrizione || "N/A"}
+        {volunteer.enrollment_year || "N/A"}
       </p>
       <p>
-        <strong>Erasmus/Estero:</strong> {volunteer.erasmus_o_estero || "N/A"}
+        <strong>Erasmus/Estero:</strong> {volunteer.erasmus_status || "N/A"}
       </p>
       <hr />
       <h3
@@ -267,15 +267,15 @@ export default function VolunteerDetails() {
       </h3>
       <p>
         <strong>Associazione Esterna:</strong>{" "}
-        {volunteer.associazione_esterna || "N/A"}
+        {volunteer.is_in_external_association || "N/A"}
       </p>
       <p>
         <strong>Nome Associazione:</strong>{" "}
-        {volunteer.nome_associazione || "N/A"}
+        {volunteer.external_association_name || "N/A"}
       </p>
       <p>
         <strong>Data di Ingresso in Associazione:</strong>{" "}
-        {volunteer.data_ingresso_associazione || "N/A"}
+        {volunteer.date_of_joining || "N/A"}
       </p>
       <hr />
       <h3
@@ -287,13 +287,13 @@ export default function VolunteerDetails() {
       </h3>
       <p>
         <strong>Esigenze Alimentari:</strong>{" "}
-        {volunteer.esigenze_alimentari || "N/A"}
+        {volunteer.dietary_requirements || "N/A"}
       </p>
       <p>
-        <strong>Taglia T-Shirt:</strong> {volunteer.taglia_tshirt || "N/A"}
+        <strong>Taglia T-Shirt:</strong> {volunteer.tshirt_size || "N/A"}
       </p>
       <p>
-        <strong>T-Shirt Presa?</strong> {volunteer.tshirt_presa || "N/A"}
+        <strong>T-Shirt Presa?</strong> {volunteer.has_taken_tshirt || "N/A"}
       </p>
       <hr />
       <h3
@@ -305,9 +305,9 @@ export default function VolunteerDetails() {
       </h3>
       <p>
         <strong>Documenti Socio:</strong>{" "}
-        {volunteer.documenti_socio ? (
+        {volunteer.id_document_link ? (
           <a
-            href={volunteer.documenti_socio}
+            href={volunteer.id_document_link}
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "blue", textDecoration: "underline" }}
@@ -321,15 +321,15 @@ export default function VolunteerDetails() {
 
       <p>
         <strong>Tipo di Documento:</strong>{" "}
-        {volunteer.tipo_di_documento || "N/A"}
+        {volunteer.id_document_type || "N/A"}
       </p>
       <p>
         <strong>Numero del Documento:</strong>{" "}
-        {volunteer.numero_del_documento || "N/A"}
+        {volunteer.id_document_number || "N/A"}
       </p>
       <p>
         <strong>Scadenza Documento:</strong>{" "}
-        {volunteer.scadenza_documento || "N/A"}
+        {volunteer.id_document_expiry_date || "N/A"}
       </p>
       <hr />
       <h3
@@ -340,10 +340,10 @@ export default function VolunteerDetails() {
         Note
       </h3>
       <p>
-        <strong>Note:</strong> {volunteer.note || " "}
+        <strong>Note:</strong> {volunteer.notes || " "}
       </p>
 
-      {(volunteer.ex_socio === true || volunteer.ex_socio === "Si") && (
+      {(volunteer.is_ex_member === true || volunteer.is_ex_member === "Si") && (
         <div
           style={{
             backgroundColor: "rgba(246, 71,71, 0.8)",
@@ -355,11 +355,13 @@ export default function VolunteerDetails() {
         >
           <p>
             <strong>Ex Socio:</strong>{" "}
-            {volunteer.ex_socio === true ? "Si" : volunteer.ex_socio || "N/A"}
+            {volunteer.is_ex_member === true
+              ? "Si"
+              : volunteer.is_ex_member || "N/A"}
           </p>
           <p>
             <strong>Data Dimissione:</strong>{" "}
-            {volunteer.data_dimissione || "N/A"}
+            {volunteer.resignation_date || "N/A"}
           </p>
         </div>
       )}
@@ -389,7 +391,7 @@ export default function VolunteerDetails() {
           cursor: "pointer",
           marginRight: 8,
         }}
-        onClick={() => window.open(volunteer.documento_di_identità, "_blank")}
+        onClick={() => window.open(volunteer.id_document_link, "_blank")}
       >
         Documento
       </button>

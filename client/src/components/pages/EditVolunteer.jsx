@@ -89,7 +89,7 @@ export default function VolunteerEdit() {
           <input
             type="text"
             name="nome"
-            value={volunteer.nome || ""}
+            value={volunteer.name || ""}
             onChange={handleChange}
           />
         </label>
@@ -98,15 +98,15 @@ export default function VolunteerEdit() {
           <input
             type="text"
             name="cognome"
-            value={volunteer.cognome || ""}
+            value={volunteer.surname || ""}
             onChange={handleChange}
           />
         </label>
         <label>
           Genere:
           <select
-            name="genere"
-            value={volunteer.genere || ""}
+            name="gender"
+            value={volunteer.gender || ""}
             onChange={handleChange}
           >
             <option value="">Seleziona</option>
@@ -150,8 +150,8 @@ export default function VolunteerEdit() {
           Data di Nascita:
           <input
             type="date"
-            name="data_di_nascita"
-            value={volunteer.data_di_nascita || ""}
+            name="date_of_birth"
+            value={volunteer.date_of_birth || ""}
             onChange={handleChange}
           />
         </label>
@@ -159,8 +159,8 @@ export default function VolunteerEdit() {
           Luogo di Nascita:
           <input
             type="text"
-            name="luogo_di_nascita"
-            value={volunteer.luogo_di_nascita || ""}
+            name="place_of_birth"
+            value={volunteer.place_of_birth || ""}
             onChange={handleChange}
           />
         </label>
@@ -168,8 +168,8 @@ export default function VolunteerEdit() {
           Codice Fiscale:
           <input
             type="text"
-            name="codice_fiscale"
-            value={volunteer.codice_fiscale || ""}
+            name="fiscal_code"
+            value={volunteer.fiscal_code || ""}
             onChange={handleChange}
           />
         </label>
@@ -177,8 +177,8 @@ export default function VolunteerEdit() {
           Luogo di Residenza:
           <input
             type="text"
-            name="luogo_di_residenza"
-            value={volunteer.luogo_di_residenza || ""}
+            name="place_of_residence"
+            value={volunteer.place_of_residence || ""}
             onChange={handleChange}
           />
         </label>
@@ -186,8 +186,8 @@ export default function VolunteerEdit() {
           Indirizzo di Domicilio:
           <input
             type="text"
-            name="indirizzo_di_domicilio"
-            value={volunteer.indirizzo_di_domicilio || ""}
+            name="address_of_domicile"
+            value={volunteer.address_of_domicile || ""}
             onChange={handleChange}
           />
         </label>
@@ -196,8 +196,8 @@ export default function VolunteerEdit() {
         <label>
           Iscritto in Sapienza:
           <select
-            name="iscritto_in_sapienza"
-            value={volunteer.iscritto_in_sapienza || "NO"}
+            name="is_enrolled_in_sapienza"
+            value={volunteer.is_enrolled_in_sapienza || "NO"}
             onChange={handleChange}
           >
             <option value="SI">Sì</option>
@@ -208,8 +208,8 @@ export default function VolunteerEdit() {
           Matricola:
           <input
             type="text"
-            name="matricola"
-            value={volunteer.matricola || ""}
+            name="student_id"
+            value={volunteer.student_id || ""}
             onChange={handleChange}
           />
         </label>
@@ -217,8 +217,8 @@ export default function VolunteerEdit() {
           Email Istituzionale:
           <input
             type="email"
-            name="email_istituzionale"
-            value={volunteer.email_istituzionale || ""}
+            name="institutional_email"
+            value={volunteer.institutional_email || ""}
             onChange={handleChange}
           />
         </label>
@@ -226,26 +226,32 @@ export default function VolunteerEdit() {
           Status Accademico:
           <input
             type="text"
-            name="status_accademico"
-            value={volunteer.status_accademico || ""}
+            name="academic_status"
+            value={volunteer.academic_status || ""}
             onChange={handleChange}
           />
         </label>
         <label>
           Facoltà di Appartenenza:
-          <input
+          <select
             type="text"
-            name="facolta_di_appartenenza"
-            value={volunteer.facolta_di_appartenenza || ""}
+            name="faculty_name"
+            value={volunteer.faculty_name || ""}
             onChange={handleChange}
-          />
+          >
+            {global.FACULTIES.map((facolta) => (
+              <option key={facolta} value={facolta}>
+                {facolta}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Corso di Laurea:
           <input
             type="text"
-            name="corso_di_laurea"
-            value={volunteer.corso_di_laurea || ""}
+            name="degree_name"
+            value={volunteer.degree_name || ""}
             onChange={handleChange}
           />
         </label>
@@ -253,8 +259,8 @@ export default function VolunteerEdit() {
           Tipologia di Corso:
           <input
             type="text"
-            name="tipologia_di_corso"
-            value={volunteer.tipologia_di_corso || ""}
+            name="course_type"
+            value={volunteer.course_type || ""}
             onChange={handleChange}
           />
         </label>
@@ -262,16 +268,16 @@ export default function VolunteerEdit() {
           Anno di Iscrizione:
           <input
             type="number"
-            name="anno_di_iscrizione"
-            value={volunteer.anno_di_iscrizione || ""}
+            name="enrollment_year"
+            value={volunteer.enrollment_year || ""}
             onChange={handleChange}
           />
         </label>
         <label>
           Erasmus/Estero:
           <select
-            name="erasmus_o_estero"
-            value={volunteer.erasmus_o_estero || "NO"}
+            name="erasmus_status"
+            value={volunteer.erasmus_status || "NO"}
             onChange={handleChange}
           >
             <option value="SI">Sì</option>
@@ -283,8 +289,8 @@ export default function VolunteerEdit() {
         <label>
           Associato Esterno:
           <select
-            name="associazione_esterna"
-            value={volunteer.associazione_esterna || "NO"}
+            name="is_in_external_association"
+            value={volunteer.is_in_external_association || "NO"}
             onChange={handleChange}
           >
             <option value="SI">Sì</option>
@@ -295,8 +301,8 @@ export default function VolunteerEdit() {
           Nome Associazione:
           <input
             type="text"
-            name="nome_associazione"
-            value={volunteer.nome_associazione || ""}
+            name="external_association_name"
+            value={volunteer.external_association_name || ""}
             onChange={handleChange}
           />
         </label>
@@ -304,8 +310,8 @@ export default function VolunteerEdit() {
           Quando Entrato:
           <input
             type="date"
-            name="quando_entrato"
-            value={volunteer.quando_entrato || ""}
+            name="date_of_joining"
+            value={volunteer.date_of_joining || ""}
             onChange={handleChange}
           />
         </label>
@@ -315,8 +321,8 @@ export default function VolunteerEdit() {
           Esigenze Alimentari:
           <input
             type="text"
-            name="esigenze_alimentari"
-            value={volunteer.esigenze_alimentari || ""}
+            name="dietary_requirements"
+            value={volunteer.dietary_requirements || ""}
             onChange={handleChange}
           />
         </label>
@@ -324,16 +330,16 @@ export default function VolunteerEdit() {
           Taglia:
           <input
             type="text"
-            name="taglia"
-            value={volunteer.taglia || ""}
+            name="tshirt_size"
+            value={volunteer.tshirt_size || ""}
             onChange={handleChange}
           />
         </label>
         <label>
           Maglia Presa:
           <select
-            name="maglia_presa"
-            value={volunteer.maglia_presa || "NO"}
+            name="has_taken_tshirt"
+            value={volunteer.has_taken_tshirt || "NO"}
             onChange={handleChange}
           >
             <option value="SI">Sì</option>
@@ -345,12 +351,12 @@ export default function VolunteerEdit() {
         <label>
           Ex Socio:
           <select
-            name="ex_socio"
-            value={volunteer.ex_socio ? "SI" : "NO"}
+            name="is_ex_member"
+            value={volunteer.is_ex_member ? "SI" : "NO"}
             onChange={(e) =>
               setVolunteer({
                 ...volunteer,
-                ex_socio: e.target.value === "SI",
+                is_ex_member: e.target.value === "SI",
               })
             }
           >
@@ -362,16 +368,16 @@ export default function VolunteerEdit() {
           Data Dimissione:
           <input
             type="date"
-            name="data_dimissione"
-            value={volunteer.data_dimissione || ""}
+            name="resignation_date"
+            value={volunteer.resignation_date || ""}
             onChange={handleChange}
           />
         </label>
         <label>
           Note:
           <textarea
-            name="note"
-            value={volunteer.note || ""}
+            name="notes"
+            value={volunteer.notes || ""}
             onChange={handleChange}
           ></textarea>
         </label>

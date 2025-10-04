@@ -4,5 +4,18 @@
   },
   "COLORS": {
     "LIGHTGRAY": "rgb(245, 247, 249)"
-  }
+  },
+  "FACULTIES": [
+    "Architettura",
+    "Economia",
+    "Farmacia e Medicina",
+    "Giurisprudenza",
+    "Ingegneria Civile e Industriale",
+    "Ingegneria dell'Informazione, Informatica e Statistica",
+    "Lettere e Filosofia",
+    "Medicina e Odontoiatria",
+    "Medicina e Psicologia",
+    "Scienze Matematiche, Fisiche e Naturali",
+    "Scienze Politiche, Sociologia e Comunicazione"
+  ]
 }

@@ -68,7 +68,7 @@ export default function Volunteers() {
 
           setVolunteers(data.volunteers);
           const active = data.volunteers.filter(
-            (v) => v.ex_socio !== true && v.ex_socio !== "Si"
+            (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
           );
           setFilteredVolunteers(active);
         } else {
@@ -105,12 +105,12 @@ export default function Volunteers() {
 
     if (!includeExSocio) {
       filtered = filtered.filter(
-        (v) => v.ex_socio !== true && v.ex_socio !== "Si"
+        (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
       );
     }
 
     filtered = filtered.filter((volunteer) =>
-      `${volunteer.nome} ${volunteer.cognome}`.toLowerCase().includes(search)
+      `${volunteer.name} ${volunteer.surname}`.toLowerCase().includes(search)
     );
 
     if (team) {
@@ -183,7 +183,8 @@ export default function Volunteers() {
                 className="board-card"
                 style={{
                   background:
-                    volunteer.ex_socio === true || volunteer.ex_socio === "Si"
+                    volunteer.is_ex_member === true ||
+                    volunteer.is_ex_member === "Si"
                       ? "linear-gradient(135deg, #ff9999 20%, #ff3333 80%)"
                       : volunteer.team === "BOARD"
                       ? "linear-gradient(to right, rgba(255, 255, 255, 0.4) 0 100%), url(/gradient-bg3.jpg)"
@@ -196,14 +197,16 @@ export default function Volunteers() {
                   backgroundSize:
                     volunteer.team === "BOARD" &&
                     !(
-                      volunteer.ex_socio === true || volunteer.ex_socio === "Si"
+                      volunteer.is_ex_member === true ||
+                      volunteer.is_ex_member === "Si"
                     )
                       ? "160%"
                       : "initial",
                   backgroundPosition:
                     volunteer.team === "BOARD" &&
                     !(
-                      volunteer.ex_socio === true || volunteer.ex_socio === "Si"
+                      volunteer.is_ex_member === true ||
+                      volunteer.is_ex_member === "Si"
                     )
                       ? "0% 25%"
                       : "center",
@@ -212,14 +215,14 @@ export default function Volunteers() {
                 <CardContent>
                   <Link
                     variant="h5"
-                    href={`/volunteer/${volunteer.matricola}`}
+                    href={`/volunteer/${volunteer.student_id}`}
                     style={{
                       textDecoration: "underline",
                       color: "inherit",
                       fontWeight: "bold",
                     }}
                   >
-                    {volunteer.nome} {volunteer.cognome}
+                    {volunteer.name} {volunteer.surname}
                   </Link>
                   <Typography color="textSecondary">
                     Team: {volunteer.team || "N/A"}
