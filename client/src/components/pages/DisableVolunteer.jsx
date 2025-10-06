@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function DisableVolunteerModal({ volunteer, onConfirm, onCancel }) {
   const [confirmationText, setConfirmationText] = useState("");
-  const expected = (volunteer?.nome || "").toLowerCase();
+  const expected = (volunteer?.name || "").toLowerCase();
 
   const handleConfirm = () => {
     if (confirmationText.trim().toLowerCase() === expected && expected) {
@@ -13,34 +13,97 @@ export default function DisableVolunteerModal({ volunteer, onConfirm, onCancel }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-lg font-bold mb-4">Elimina volontario</h2>
-        <p className="mb-2">
-          Per confermare l'eliminazione di <strong>{volunteer.nome}</strong>, scrivi il suo nome:
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "rgba(0, 0, 0, 0.75)",
+        backdropFilter: "blur(3px)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 9999,
+      }}
+      onClick={onCancel} 
+    >
+      {/* Modal box */}
+      <div
+        onClick={(e) => e.stopPropagation()} 
+        style={{
+          backgroundColor: "white",
+          borderRadius: "10px",
+          padding: "24px",
+          width: "400px",
+          boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
+          animation: "fadeIn 0.2s ease-in-out",
+          textAlign: "center",
+        }}
+      >
+        <h2 style={{ color: "#d32f2f", marginBottom: "16px" }}>
+          Elimina volontario
+        </h2>
+        <p style={{ marginBottom: "12px", color:"#000"}}>
+          Per confermare l'eliminazione di{" "}
+          <strong>{volunteer.name}</strong>, scrivi il suo nome:
         </p>
+
         <input
           type="text"
-          className="w-full border rounded p-2 mb-4"
           value={confirmationText}
           onChange={(e) => setConfirmationText(e.target.value)}
           placeholder="Inserisci il nome"
+          style={{
+            width: "100%",
+            border: "1px solid #ccc",
+            borderRadius: "6px",
+            padding: "8px",
+            marginBottom: "16px",
+            fontSize: "14px",
+          }}
         />
-        <div className="flex justify-end gap-2">
+
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
           <button
             onClick={onCancel}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            style={{
+              backgroundColor: "#ccc",
+              border: "none",
+              padding: "8px 12px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
           >
             Cancella
           </button>
+
           <button
             onClick={handleConfirm}
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            style={{
+              backgroundColor: "#d32f2f",
+              color: "white",
+              border: "none",
+              padding: "8px 12px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
           >
             Elimina
           </button>
         </div>
       </div>
+
+      
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
     </div>
   );
 }

@@ -76,10 +76,11 @@ export default function VolunteerDetails() {
   };
 
   return (
-    <div
-      className="landing-main-container"
-      style={{ padding: "0px 20px 10px 20px", color: "#333" }}
-    >
+    <>
+      <div
+        className="landing-main-container"
+        style={{ padding: "0px 20px 10px 20px", color: "#333" }}
+      >
       <div
         style={{
           display: "flex",
@@ -397,18 +398,20 @@ export default function VolunteerDetails() {
       </button>
 
       <button
-        style={{
-          backgroundColor: "#ff0000ff",
-          color: "white",
-          padding: "10px 15px",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-        onClick={() => setShowModal(true)}
-      >
-        Elimina
-      </button>
+          style={{
+            backgroundColor: "#ff0000ff",
+            color: "white",
+            padding: "10px 15px",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+          onClick={() => setShowModal(true)}
+        >
+          Elimina
+        </button>
+      </div>
 
+      {/* ⬇️  render modal *outside* of landing container */}
       {showModal && (
         <DisableVolunteerModal
           volunteer={volunteer}
@@ -416,6 +419,6 @@ export default function VolunteerDetails() {
           onCancel={() => setShowModal(false)}
         />
       )}
-    </div>
+    </>
   );
 }
