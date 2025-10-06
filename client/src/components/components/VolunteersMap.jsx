@@ -14,7 +14,7 @@ export default function VolunteersMap() {
   useEffect(() => {
     const fetchVolunteers = async () => {
       try {
-        const res = await fetch("${global.CONNECTION.ENDPOINT}/volunteers", {
+        const res = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export default function VolunteersMap() {
     const counts = {};
     volunteers.forEach((v) => {
       const placeRaw =
-        locationType === "nascita" ? v.luogo_di_nascita : v.luogo_di_residenza;
+        locationType === "nascita" ? v.place_of_birth : v.place_of_residence;
       const place = placeRaw?.trim().toLowerCase();
       if (!place) return;
       counts[place] = (counts[place] || 0) + 1;
