@@ -10,46 +10,46 @@ export default function DownloadVolunteersData() {
   // define sections and their fields
   const sections = {
     "Informazioni Personali": [
-      "nome",
-      "cognome",
-      "genere",
-      "telefono",
-      "email_personale",
-      "data_di_nascita",
-      "luogo_di_nascita",
-      "codice_fiscale",
-      "luogo_di_residenza",
-      "indirizzo_di_domicilio",
+      "name",
+      "surname",
+      "gender",
+      "phone_number",
+      "personal_email",
+      "date_of_birth",
+      "place_of_birth",
+      "fiscal_code",
+      "place_of_residence",
+      "address_of_domicile",
     ],
     "Informazioni Accademiche": [
-      "iscritto_in_sapienza",
-      "matricola",
-      "email_istituzionale",
-      "status_accademico",
-      "facolta_di_appartenenza",
+      "is_enrolled_in_sapienza",
+      "student_id",
+      "institutional_email",
+      "academic_status",
+      "faculty_name",
       "dipartimento",
-      "tipologia",
-      "corso_di_laurea",
-      "anno_di_iscrizione",
-      "erasmus_o_estero",
+      "course_type",
+      "degree_name",
+      "enrollment_year",
+      "erasmus_status",
     ],
     Associazioni: [
-      "associazione_esterna",
-      "nome_associazione",
-      "data_ingresso_associazione",
+      "is_in_external_association",
+      "external_association_name",
+      "date_of_joining",
     ],
     "Preferenze ed Extra": [
-      "esigenze_alimentari",
-      "taglia_tshirt",
-      "tshirt_presa",
+      "dietary_requirements",
+      "tshirt_size",
+      "has_taken_tshirt",
     ],
     Documenti: [
-      "documenti_socio",
-      "tipo_di_documento",
-      "numero_del_documento",
-      "scadenza_documento",
+      "id_document_link",
+      "id_document_type",
+      "id_document_number",
+      "id_document_expiry_date",
     ],
-    Note: ["note", "ex_socio", "data_dimissione"],
+    Note: ["notes", "is_ex_member", "resignation_date"],
   };
 
   const [volunteers, setVolunteers] = useState([]);
@@ -88,6 +88,7 @@ export default function DownloadVolunteersData() {
       const data = await response.json();
       try {
         if (data.volunteers && data.volunteers.length > 0) {
+          console.log("First fetched volunteer:", data.volunteers[0]);
           setVolunteers(data.volunteers);
         } else {
           console.log("No volunteers found");
