@@ -15,7 +15,6 @@ export default function Sidebar() {
   useEffect(() => {
     const currentUrl = location.pathname;
     const buttons = document.querySelectorAll(".sidebar-button");
-    console.log(location);
 
     buttons.forEach((button) => {
       // console.log(button.id, "|", currentUrl.split("/")[1]);
