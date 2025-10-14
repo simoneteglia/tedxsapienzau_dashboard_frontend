@@ -45,47 +45,50 @@ export default function Landing() {
 
   useEffect(() => {
     const fetchVolunteers = async () => {
+      setLoading(true);
       try {
-      const endpoint =
-        selectedYear === "all"
-          ? `${global.CONNECTION.ENDPOINT}/volunteers`
-          : `${global.CONNECTION.ENDPOINT}/volunteers/by_year?year=${selectedYear}`;
+        const endpoint = `${global.CONNECTION.ENDPOINT}/volunteers/by_year?year=${selectedYear}`;
 
-      const response = await fetch(endpoint, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
+        const response = await fetch(endpoint, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (data.volunteers && data.volunteers.length > 0) {
-        setAllVolunteers(data.volunteers);
+        const data = await response.json();
 
-        // extract available years from all volunteers for the dropdown
-        const years = [
-          ...new Set(
-            data.volunteers.map((v) =>
-              v.date_of_joining ? v.date_of_joining.split("-")[0] : "N/A"
-            )
-          ),
-        ].sort();
-
-        setAvailableYears(years);
-        if (selectedYear === "all") setSelectedYear(new Date().getFullYear().toString());
-      } else {
+        if (selectedYear === "all" && data.volunteers_by_year) {
+          const years = Object.keys(data.volunteers_by_year).sort(
+            (a, b) => b - a
+          );
+          setAvailableYears(years);
+          // Use backend's unique list
+          setAllVolunteers(data.all_volunteers || []);
+        } else if (data.volunteers) {
+          // volunteers active in selectedYear
+          const fixed = data.volunteers.map((v) => ({
+            ...v,
+            date_of_joining: v.date_of_joining
+              ? String(v.date_of_joining)
+              : "N/A",
+            _id: v._id ? String(v._id) : undefined,
+          }));
+          setAllVolunteers(fixed);
+        } else {
+          setAllVolunteers([]);
+        }
+      } catch (error) {
+        console.error("Error fetching volunteers", error);
         setAllVolunteers([]);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching volunteers", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchVolunteers();
-}, [selectedYear]);
+    fetchVolunteers();
+  }, [selectedYear]);
 
   useEffect(() => {
     let filteredVolunteers = allVolunteers;
@@ -95,14 +98,6 @@ export default function Landing() {
         (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
       );
     }
-
-    filteredVolunteers = filteredVolunteers.filter((volunteer) => {
-  if (selectedYear === "all") return true;
-  const year = volunteer.date_of_joining
-    ? volunteer.date_of_joining.split("-")[0] // extract "2023" from "2023-09-15"
-    : null;
-  return year === selectedYear;
-});
 
     const facultyCounts = {};
     const teamCounts = {};
@@ -352,19 +347,24 @@ export default function Landing() {
           Mostra volontari per anno:{" "}
         </label>
         <select
-  id="yearFilter"
-  value={selectedYear}
-  onChange={(e) => setSelectedYear(e.target.value)}
-  className="p-2 border rounded"
-  style={{ minWidth: "120px", backgroundColor: "white", borderColor: "#ccc", color: "black" }}
->
-  <option value="all">All Years</option>
-  {availableYears.map((year) => (
-    <option key={year} value={year}>
-      {year}
-    </option>
-  ))}
-</select>
+          id="yearFilter"
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(e.target.value)}
+          className="p-2 border rounded"
+          style={{
+            minWidth: "120px",
+            backgroundColor: "white",
+            borderColor: "#ccc",
+            color: "black",
+          }}
+        >
+          <option value="all">All Years</option>
+          {availableYears.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
 
         <button
           onClick={() => setShowExSocio((prev) => !prev)}
