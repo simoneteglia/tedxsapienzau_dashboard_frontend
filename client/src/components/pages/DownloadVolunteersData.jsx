@@ -49,6 +49,11 @@ export default function DownloadVolunteersData() {
       "id_document_number",
       "id_document_expiry_date",
     ],
+    "Informazioni Tirocinio": [
+      "traineeship_status",
+      "start_date",
+      "completed_date",
+    ],
     Note: ["notes", "is_ex_member", "resignation_date"],
   };
 
