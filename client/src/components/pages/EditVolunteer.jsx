@@ -88,7 +88,7 @@ export default function VolunteerEdit() {
           Nome:
           <input
             type="text"
-            name="nome"
+            name="name"
             value={volunteer.name || ""}
             onChange={handleChange}
           />
@@ -97,7 +97,7 @@ export default function VolunteerEdit() {
           Cognome:
           <input
             type="text"
-            name="cognome"
+            name="surname"
             value={volunteer.surname || ""}
             onChange={handleChange}
           />
