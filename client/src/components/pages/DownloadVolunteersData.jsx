@@ -135,10 +135,11 @@ export default function DownloadVolunteersData() {
       return;
     }
 
-    const filtered =
-      selectedTeam === "all"
-        ? volunteers
-        : volunteers.filter((v) => v.team === selectedTeam);
+    const filtered = volunteers.filter((v) => {
+      const teamMatch = selectedTeam === "all" || v.team === selectedTeam;
+      const activeMatch = v.is_ex_member === false; // excluding former members
+      return teamMatch && activeMatch;
+    });
 
     const data = filtered.map((v) => {
       const obj = {};
