@@ -237,7 +237,7 @@ function AddVolunteers() {
     faculty_name: global.FACULTIES,
     degree_name: [
       "Laurea Triennale",
-      "Laurea agistrale",
+      "Laurea Magistrale",
       "Laurea Ciclo Unico",
       "Dottorato",
       "Altro",

@@ -117,21 +117,34 @@ export default function VolunteerEdit() {
         </label>
         <label>
           Team:
-          <input
-            type="text"
+          <select
             name="team"
             value={volunteer.team || ""}
             onChange={handleChange}
-          />
+          >
+            <option value="">Seleziona</option>
+            <option value="Board">Board</option>
+            <option value="PEM">PEM</option>
+            <option value="IT">IT</option>
+            <option value="SEC">SEC</option>
+            <option value="ERS">ERS</option>
+            <option value="CEM">CEM</option>
+            <option value="LA">LA</option>
+            <option value="HRA">HRA</option>
+            <option value="DEX">DEX</option>
+          </select>
         </label>
         <label>
           Status:
-          <input
-            type="text"
+          <select
             name="status"
             value={volunteer.status || ""}
             onChange={handleChange}
-          />
+          >
+            <option value="">Seleziona</option>
+            <option value="Supporter">Supporter</option>
+            <option value="Socio">Socio Ordinario</option>
+          </select>
         </label>
         <label>
           Subleader:
@@ -224,12 +237,16 @@ export default function VolunteerEdit() {
         </label>
         <label>
           Status Accademico:
-          <input
-            type="text"
+          <select
             name="academic_status"
             value={volunteer.academic_status || ""}
             onChange={handleChange}
-          />
+          >
+            <option value="">Seleziona</option>
+            <option value="Studente">Student*</option>
+            <option value="Dottorando">Dottorand*</option>
+            <option value="Laureato">Laureat*</option>
+          </select>
         </label>
         <label>
           Facoltà di Appartenenza:
@@ -257,12 +274,18 @@ export default function VolunteerEdit() {
         </label>
         <label>
           Tipologia di Corso:
-          <input
-            type="text"
+          <select
             name="course_type"
             value={volunteer.course_type || ""}
             onChange={handleChange}
-          />
+          >
+            <option value="">Seleziona</option>
+            <option value="Laurea Triennale">Triennale</option>
+            <option value="Magistrale">Magistrale</option>
+            <option value="Laurea Ciclo Unico">Laurea Ciclo Unico</option>
+            <option value="Dottorato">Dottorato</option>
+            <option value="Altro">Dottorato</option>
+          </select>
         </label>
         <label>
           Anno di Iscrizione:
@@ -327,13 +350,20 @@ export default function VolunteerEdit() {
           />
         </label>
         <label>
-          Taglia:
-          <input
-            type="text"
+          Genere:
+          <select
             name="tshirt_size"
             value={volunteer.tshirt_size || ""}
             onChange={handleChange}
-          />
+          >
+            <option value="">Seleziona</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
+          </select>
         </label>
         <label>
           Maglia Presa:
