@@ -123,7 +123,7 @@ export default function VolunteerEdit() {
             onChange={handleChange}
           >
             <option value="">Seleziona</option>
-            <option value="Board">Board</option>
+            <option value="BOARD">BOARD</option>
             <option value="PEM">PEM</option>
             <option value="IT">IT</option>
             <option value="SEC">SEC</option>

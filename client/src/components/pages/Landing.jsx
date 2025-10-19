@@ -438,7 +438,7 @@ export default function Landing() {
                 scales: {
                   x: {
                     min: 0,
-                    max: 12,
+                    max: 15,
                     ticks: {
                       stepSize: 1,
                     },
