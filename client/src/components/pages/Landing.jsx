@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../../assets/styles/landing.css";
-import { Bar, Doughnut } from "react-chartjs-2";
+import {
+  Bar,
+  Doughnut,
+  getDatasetAtEvent,
+  getElementAtEvent,
+} from "react-chartjs-2";
+import { useOutletContext } from "react-router-dom";
 import global from "../../global.json";
 import {
   Chart as ChartJS,
@@ -29,6 +35,8 @@ ChartJS.register(
 );
 
 export default function Landing() {
+  const [windowSize, setWindowSize, setSelectedVolunteerFilter] =
+    useOutletContext();
   const [allVolunteers, setAllVolunteers] = useState([]);
   const [facultyData, setFacultyData] = useState({});
   const [teamData, setTeamData] = useState({});
@@ -42,6 +50,13 @@ export default function Landing() {
   const [availableYears, setAvailableYears] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showExSocio, setShowExSocio] = useState(false);
+
+  const facultyChartRef = useRef();
+  const teamChartRef = useRef();
+  const degreeChartRef = useRef();
+  const matriculationChartRef = useRef();
+  const ageChartRef = useRef();
+  const isIscrittoChartRef = useRef();
 
   useEffect(() => {
     const fetchVolunteers = async () => {
@@ -99,33 +114,39 @@ export default function Landing() {
       );
     }
 
-    const facultyCounts = {};
-    const teamCounts = {};
-    const degreeCounts = {};
-    const matriculationCounts = {};
-    const genderCounts = {};
-    const ageCounts = {};
-    const isIscrittoCounts = {};
+    const facultyGroups = {};
+    const teamGroups = {};
+    const degreeGroups = {};
+    const matriculationGroups = {};
+    const genderGroups = {};
+    const ageGroups = {};
+    const isIscrittoGroups = {};
 
     filteredVolunteers.forEach((volunteer) => {
       const faculty = volunteer["faculty_name"] || "Unknown";
-      facultyCounts[faculty] = (facultyCounts[faculty] || 0) + 1;
+      if (!facultyGroups[faculty]) facultyGroups[faculty] = [];
+      facultyGroups[faculty].push(volunteer);
 
       const team = volunteer["team"] || "Unknown";
-      teamCounts[team] = (teamCounts[team] || 0) + 1;
+      if (!teamGroups[team]) teamGroups[team] = [];
+      teamGroups[team].push(volunteer);
 
       const degree = volunteer["course_type"] || "Unknown";
-      degreeCounts[degree] = (degreeCounts[degree] || 0) + 1;
+      if (!degreeGroups[degree]) degreeGroups[degree] = [];
+      degreeGroups[degree].push(volunteer);
 
       const matriculation = volunteer["enrollment_year"] || "Unknown";
-      matriculationCounts[matriculation] =
-        (matriculationCounts[matriculation] || 0) + 1;
+      if (!matriculationGroups[matriculation])
+        matriculationGroups[matriculation] = [];
+      matriculationGroups[matriculation].push(volunteer);
 
       const gender = volunteer["gender"] || "N/A";
-      genderCounts[gender] = (genderCounts[gender] || 0) + 1;
+      if (!genderGroups[gender]) genderGroups[gender] = [];
+      genderGroups[gender].push(volunteer);
 
       const isIscritto = volunteer["is_enrolled_in_sapienza"] || "Unknown";
-      isIscrittoCounts[isIscritto] = (isIscrittoCounts[isIscritto] || 0) + 1;
+      if (!isIscrittoGroups[isIscritto]) isIscrittoGroups[isIscritto] = [];
+      isIscrittoGroups[isIscritto].push(volunteer);
 
       // compute volunteer age
       if (volunteer["date_of_birth"]) {
@@ -145,29 +166,32 @@ export default function Landing() {
           else if (age <= 30) range = "27-30";
           else range = "30+";
 
-          ageCounts[range] = (ageCounts[range] || 0) + 1;
+          if (!ageGroups[range]) ageGroups[range] = [];
+          ageGroups[range].push(volunteer);
         } else {
           // if birthYear parsing failed
-          ageCounts["Unknown"] = (ageCounts["Unknown"] || 0) + 1;
+          if (!ageGroups["Unknown"]) ageGroups["Unknown"] = [];
+          ageGroups["Unknown"].push(volunteer);
         }
       } else {
         // if no date provided at all
-        ageCounts["Unknown"] = (ageCounts["Unknown"] || 0) + 1;
+        if (!ageGroups["Unknown"]) ageGroups["Unknown"] = [];
+        ageGroups["Unknown"].push(volunteer);
       }
     });
 
-    setFacultyData(facultyCounts);
-    setTeamData(teamCounts);
-    setDegreeData(degreeCounts);
-    setMatriculationData(matriculationCounts);
-    setGenderData(genderCounts);
-    setAgeData(ageCounts);
-    setIsIscrittoData(isIscrittoCounts);
+    setFacultyData(facultyGroups);
+    setTeamData(teamGroups);
+    setDegreeData(degreeGroups);
+    setMatriculationData(matriculationGroups);
+    setGenderData(genderGroups);
+    setAgeData(ageGroups);
+    setIsIscrittoData(isIscrittoGroups);
   }, [selectedYear, allVolunteers, showExSocio]);
 
   const generateChartData = (data, label, sortByLabel = false) => {
     const labels = Object.keys(data);
-    const counts = Object.values(data);
+    const counts = Object.values(data).map((group) => group.length);
 
     const combinedData = labels.map((label, index) => ({
       label,
@@ -227,7 +251,7 @@ export default function Landing() {
 
   const generateGenderChartData = () => {
     const labels = Object.keys(genderData);
-    const data = Object.values(genderData);
+    const data = Object.values(genderData).map((group) => group.length);
 
     return {
       labels: labels,
@@ -382,7 +406,10 @@ export default function Landing() {
         <div className="text-sm text-gray-600" style={{ marginLeft: "20px" }}>
           Totale Volontari:{" "}
           <strong>
-            {Object.values(facultyData).reduce((a, b) => a + b, 0)}
+            {Object.values(facultyData).reduce(
+              (total, group) => total + group.length,
+              0
+            )}
           </strong>
         </div>
       </div>
@@ -424,6 +451,21 @@ export default function Landing() {
                   ...chartOptions.plugins,
                 },
               }}
+              ref={isIscrittoChartRef}
+              onClick={(e) => {
+                const activeElements = getElementAtEvent(
+                  isIscrittoChartRef.current,
+                  e
+                );
+
+                if (activeElements.length > 0) {
+                  const { index } = activeElements[0];
+                  const chart = isIscrittoChartRef.current;
+                  const label = chart.data.labels[index];
+                  const volunteersForIsIscritto = isIscrittoData[label];
+                  setSelectedVolunteerFilter(volunteersForIsIscritto);
+                }
+              }}
             />
           </div>
           <div style={{ width: "80%", margin: "20px auto" }}>
@@ -433,6 +475,29 @@ export default function Landing() {
                 facultyData,
                 "Numero di volontari per Facoltà"
               )}
+              ref={facultyChartRef}
+              onClick={(e) => {
+                const activeElements = getElementAtEvent(
+                  facultyChartRef.current,
+                  e
+                );
+
+                if (activeElements.length > 0) {
+                  // activeElements è un array, prendi il primo elemento [0]
+                  const { datasetIndex, index } = activeElements[0];
+                  const chart = facultyChartRef.current;
+                  const label = chart.data.labels[index];
+                  const volunteersForFaculty = facultyData[label];
+
+                  console.log(`Faculty: ${label}`);
+                  console.log(
+                    "Volunteers in this faculty:",
+                    volunteersForFaculty
+                  );
+
+                  setSelectedVolunteerFilter(volunteersForFaculty);
+                }
+              }}
               options={{
                 indexAxis: "y",
                 scales: {
@@ -467,6 +532,22 @@ export default function Landing() {
                   ...chartOptions.plugins,
                 },
               }}
+              ref={teamChartRef}
+              onClick={(e) => {
+                const activeElements = getElementAtEvent(
+                  teamChartRef.current,
+                  e
+                );
+
+                if (activeElements.length > 0) {
+                  const { index } = activeElements[0];
+                  const chart = teamChartRef.current;
+                  const label = chart.data.labels[index];
+                  const volunteersForTeam = teamData[label];
+
+                  setSelectedVolunteerFilter(volunteersForTeam);
+                }
+              }}
             />
           </div>
           <div style={{ width: "80%", margin: "20px auto" }}>
@@ -481,6 +562,21 @@ export default function Landing() {
                 plugins: {
                   ...chartOptions.plugins,
                 },
+              }}
+              ref={degreeChartRef}
+              onClick={(e) => {
+                const activeElements = getElementAtEvent(
+                  degreeChartRef.current,
+                  e
+                );
+
+                if (activeElements.length > 0) {
+                  const { index } = activeElements[0];
+                  const chart = degreeChartRef.current;
+                  const label = chart.data.labels[index];
+                  const volunteersForDegree = degreeData[label];
+                  setSelectedVolunteerFilter(volunteersForDegree);
+                }
               }}
             />
           </div>
@@ -497,6 +593,21 @@ export default function Landing() {
                 plugins: {
                   ...chartOptions.plugins,
                 },
+              }}
+              ref={matriculationChartRef}
+              onClick={(e) => {
+                const activeElements = getElementAtEvent(
+                  matriculationChartRef.current,
+                  e
+                );
+
+                if (activeElements.length > 0) {
+                  const { index } = activeElements[0];
+                  const chart = matriculationChartRef.current;
+                  const label = chart.data.labels[index];
+                  const volunteersForMatriculation = matriculationData[label];
+                  setSelectedVolunteerFilter(volunteersForMatriculation);
+                }
               }}
             />
           </div>
@@ -518,6 +629,21 @@ export default function Landing() {
                 plugins: {
                   ...chartOptions.plugins,
                 },
+              }}
+              ref={ageChartRef}
+              onClick={(e) => {
+                const activeElements = getElementAtEvent(
+                  ageChartRef.current,
+                  e
+                );
+
+                if (activeElements.length > 0) {
+                  const { index } = activeElements[0];
+                  const chart = ageChartRef.current;
+                  const label = chart.data.labels[index];
+                  const volunteersForAge = ageData[label];
+                  setSelectedVolunteerFilter(volunteersForAge);
+                }
               }}
             />
           </div>

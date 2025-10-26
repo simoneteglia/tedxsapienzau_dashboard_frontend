@@ -100,6 +100,7 @@ const router = createBrowserRouter([
 
 function SidebarLayout() {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const [selectedVolunteerFilter, setSelectedVolunteerFilter] = useState(null);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -111,7 +112,7 @@ function SidebarLayout() {
 
   return (
     <div style={{ display: "flex" }}>
-      <Sidebar />
+      <Sidebar selectedVolunteerFilter={selectedVolunteerFilter} />
       <div
         id="outlet-container"
         style={{
@@ -126,7 +127,9 @@ function SidebarLayout() {
         {/* <div
           style={{ width: "100%", height: "100%", backgroundColor: "red" }}
         ></div> */}
-        <Outlet context={[windowSize, setWindowSize]} />
+        <Outlet
+          context={[windowSize, setWindowSize, setSelectedVolunteerFilter]}
+        />
       </div>
     </div>
   );

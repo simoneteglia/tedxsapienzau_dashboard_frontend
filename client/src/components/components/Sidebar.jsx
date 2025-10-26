@@ -9,7 +9,7 @@ import downloadArrow from "../../assets/images/down_arrow.svg";
 import work from "../../assets/images/work.svg";
 import "../../assets/styles/sidebar.css";
 
-export default function Sidebar() {
+export default function Sidebar({ selectedVolunteerFilter }) {
   const location = useLocation();
 
   useEffect(() => {
@@ -37,38 +37,82 @@ export default function Sidebar() {
         }}
         src={logo}
       />
-      <Link className="sidebar-button selected" to="/" id="home">
-        <img src={home} style={{ color: "black" }} alt="Home" />
-        Home
-      </Link>
-      <Link className="sidebar-button" to="/volunteers" id="volunteers">
-        <img src={users} style={{ color: "black" }} alt="Volunteers" />
-        Volontari
-      </Link>
-      <Link className="sidebar-button" to="/tirocini" id="tirocini">
-        <img
-          src={work}
-          style={{ color: "black", width: "24px" }}
-          alt="Download Dati"
-        />
-        Tirocini
-      </Link>
-      <Link className="sidebar-button" to="/add-volunteer" id="add-volunteer">
-        <img src={plusCircle} style={{ color: "black" }} alt="Add Volunteer" />
-        Aggiungi Volontario
-      </Link>
-      <Link
-        className="sidebar-button"
-        to="/download-volunteers-data"
-        id="download-volunteers-data"
+      <section
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          justifyContent: "space-between",
+          height: "100%",
+          marginBottom: "20px",
+        }}
       >
-        <img
-          src={downloadArrow}
-          style={{ color: "black" }}
-          alt="Download Dati"
-        />
-        Download Dati
-      </Link>
+        <div>
+          <Link className="sidebar-button selected" to="/" id="home">
+            <img src={home} style={{ color: "black" }} alt="Home" />
+            Home
+          </Link>
+          <Link className="sidebar-button" to="/volunteers" id="volunteers">
+            <img src={users} style={{ color: "black" }} alt="Volunteers" />
+            Volontari
+          </Link>
+          <Link className="sidebar-button" to="/tirocini" id="tirocini">
+            <img
+              src={work}
+              style={{ color: "black", width: "24px" }}
+              alt="Download Dati"
+            />
+            Tirocini
+          </Link>
+          <Link
+            className="sidebar-button"
+            to="/add-volunteer"
+            id="add-volunteer"
+          >
+            <img
+              src={plusCircle}
+              style={{ color: "black" }}
+              alt="Add Volunteer"
+            />
+            Aggiungi Volontario
+          </Link>
+          <Link
+            className="sidebar-button"
+            to="/download-volunteers-data"
+            id="download-volunteers-data"
+          >
+            <img
+              src={downloadArrow}
+              style={{ color: "black" }}
+              alt="Download Dati"
+            />
+            Download Dati
+          </Link>
+        </div>
+        <div
+          style={{
+            backgroundColor: "rgba(238, 185, 236, 0.5)",
+            borderRadius: "15px",
+            paddingLeft: "15px",
+            overflow: "scroll",
+            maxHeight: "500px",
+          }}
+        >
+          <p>
+            <b>Volontari selezionati ⬇️</b>
+          </p>
+          <ul>
+            {selectedVolunteerFilter != null &&
+              selectedVolunteerFilter.map((v) => {
+                return (
+                  <li key={v._id}>
+                    {v.name} {v.surname}
+                  </li>
+                );
+              })}
+          </ul>
+        </div>
+      </section>
     </nav>
   );
 }
