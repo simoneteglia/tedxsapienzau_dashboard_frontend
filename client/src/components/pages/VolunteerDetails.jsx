@@ -18,7 +18,7 @@ export default function VolunteerDetails() {
   useEffect(() => {
     const fetchVolunteer = async () => {
       console.log("Fetching volunteer with id:", id);
-  const token = localStorage.getItem("access_token");
+      const token = localStorage.getItem("access_token");
       const res = await fetch(
         `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
         {
@@ -51,7 +51,7 @@ export default function VolunteerDetails() {
           ? `id=${volunteer.id}`
           : `student_id=${volunteer.student_id ?? id}`;
 
-          const token = localStorage.getItem("access_token");
+      const token = localStorage.getItem("access_token");
       const res = await fetch(
         `${global.CONNECTION.ENDPOINT}/disable_volunteer?${query}`,
         {
@@ -63,21 +63,21 @@ export default function VolunteerDetails() {
         }
       );
       const newToken = response.headers.get("X-New-Token");
-        const data = await response.json();
+      const data = await response.json();
 
-        if (newToken) {
-      localStorage.setItem("access_token", newToken);
-    } else if (data.new_access_token) {
-      localStorage.setItem("access_token", data.new_access_token);
-    }
+      if (newToken) {
+        localStorage.setItem("access_token", newToken);
+      } else if (data.new_access_token) {
+        localStorage.setItem("access_token", data.new_access_token);
+      }
 
-    if (response.status === 401) {
-      console.warn("Session expired. Logging out...");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      window.location.href = "/login";
-      return;
-    }
+      if (response.status === 401) {
+        console.warn("Session expired. Logging out...");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/login";
+        return;
+      }
 
       if (res.ok) {
         setShowModal(false);
@@ -171,6 +171,10 @@ export default function VolunteerDetails() {
             </p>
             <p>
               <strong>Status:</strong> {volunteer.status || "N/A"}
+            </p>
+            <p>
+              <strong>Tessera associativa pagata:</strong>{" "}
+              {volunteer.membership_card_paid || "N/A"}
             </p>
           </div>
 

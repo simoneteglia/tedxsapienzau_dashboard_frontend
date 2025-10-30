@@ -28,10 +28,10 @@ export default function VolunteerEdit() {
         const data = await response.json();
 
         if (newToken) {
-      localStorage.setItem("access_token", newToken);
-    } else if (data.new_access_token) {
-      localStorage.setItem("access_token", data.new_access_token);
-    }
+          localStorage.setItem("access_token", newToken);
+        } else if (data.new_access_token) {
+          localStorage.setItem("access_token", data.new_access_token);
+        }
         if (data.volunteer) {
           setVolunteer(data.volunteer);
         } else {
@@ -68,13 +68,13 @@ export default function VolunteerEdit() {
         }
       );
       const newToken = response.headers.get("X-New-Token");
-        const result = await response.json();
+      const result = await response.json();
 
-        if (newToken) {
-      localStorage.setItem("access_token", newToken);
-    } else if (data.new_access_token) {
-      localStorage.setItem("access_token", data.new_access_token);
-    }
+      if (newToken) {
+        localStorage.setItem("access_token", newToken);
+      } else if (result.new_access_token) {
+        localStorage.setItem("access_token", result.new_access_token);
+      }
       console.log(result);
       if (response.ok) {
         alert("Volontario aggiornato con successo!");
@@ -159,7 +159,19 @@ export default function VolunteerEdit() {
           >
             <option value="">Seleziona</option>
             <option value="Supporter">Supporter</option>
-            <option value="Socio">Socio Ordinario</option>
+            <option value="Socio Ordinario">Socio Ordinario</option>
+          </select>
+        </label>
+        <label>
+          Ha pagato la tessera:
+          <select
+            name="membership_card_paid"
+            value={volunteer.membership_card_paid || "N/A"}
+            onChange={handleChange}
+          >
+            <option value="">Seleziona</option>
+            <option value="SI">SI</option>
+            <option value="NO">NO</option>
           </select>
         </label>
         <label>
