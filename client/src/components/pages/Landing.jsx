@@ -62,6 +62,7 @@ export default function Landing() {
     const fetchVolunteers = async () => {
       setLoading(true);
       try {
+        const token = localStorage.getItem("access_token");
         const endpoint = `${global.CONNECTION.ENDPOINT}/volunteers/by_year?year=${selectedYear}`;
 
         const response = await fetch(endpoint, {
@@ -72,7 +73,22 @@ export default function Landing() {
           },
         });
 
+        const newToken = response.headers.get("X-New-Token");
         const data = await response.json();
+
+        if (newToken) {
+      localStorage.setItem("access_token", newToken);
+    } else if (data.new_access_token) {
+      localStorage.setItem("access_token", data.new_access_token);
+    }
+
+    if (response.status === 401) {
+      console.warn("Session expired. Logging out...");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      window.location.href = "/login";
+      return;
+    }
 
         if (selectedYear === "all" && data.volunteers_by_year) {
           const years = Object.keys(data.volunteers_by_year).sort(

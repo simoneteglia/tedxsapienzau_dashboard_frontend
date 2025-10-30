@@ -13,6 +13,7 @@ export default function VolunteerEdit() {
     const fetchVolunteer = async () => {
       console.log("Fetching volunteer with id:", id);
       try {
+        const token = localStorage.getItem("access_token");
         const response = await fetch(
           `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
           {
@@ -23,7 +24,14 @@ export default function VolunteerEdit() {
             },
           }
         );
+        const newToken = response.headers.get("X-New-Token");
         const data = await response.json();
+
+        if (newToken) {
+      localStorage.setItem("access_token", newToken);
+    } else if (data.new_access_token) {
+      localStorage.setItem("access_token", data.new_access_token);
+    }
         if (data.volunteer) {
           setVolunteer(data.volunteer);
         } else {
@@ -47,6 +55,7 @@ export default function VolunteerEdit() {
     delete volunteer._id;
     console.log(volunteer);
     try {
+      const token = localStorage.getItem("access_token");
       const response = await fetch(
         `${global.CONNECTION.ENDPOINT}/volunteer?id=${id}`,
         {
@@ -58,7 +67,14 @@ export default function VolunteerEdit() {
           body: JSON.stringify(volunteer),
         }
       );
-      const result = await response.json();
+      const newToken = response.headers.get("X-New-Token");
+        const result = await response.json();
+
+        if (newToken) {
+      localStorage.setItem("access_token", newToken);
+    } else if (data.new_access_token) {
+      localStorage.setItem("access_token", data.new_access_token);
+    }
       console.log(result);
       if (response.ok) {
         alert("Volontario aggiornato con successo!");

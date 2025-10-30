@@ -49,6 +49,7 @@ function AddVolunteers() {
   useEffect(() => {
     const fetchLastId = async () => {
       try {
+        const token = localStorage.getItem("access_token");
         const response = await fetch(
           `${global.CONNECTION.ENDPOINT}/volunteers`,
           {
@@ -59,7 +60,22 @@ function AddVolunteers() {
             },
           }
         );
+        const newToken = response.headers.get("X-New-Token");
         const result = await response.json();
+
+        if (newToken) {
+      localStorage.setItem("access_token", newToken);
+    } else if (data.new_access_token) {
+      localStorage.setItem("access_token", data.new_access_token);
+    }
+
+    if (response.status === 401) {
+      console.warn("Session expired. Logging out...");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      window.location.href = "/login";
+      return;
+    }
         if (response.ok) {
           const volunteers = result.volunteers;
           const lastId =
@@ -157,6 +173,7 @@ function AddVolunteers() {
     }
 
     try {
+      const token = localStorage.getItem("access_token");
       const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteer`, {
         method: "POST",
         headers: {
@@ -166,7 +183,22 @@ function AddVolunteers() {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
+      const newToken = response.headers.get("X-New-Token");
+        const result = await response.json();
+
+        if (newToken) {
+      localStorage.setItem("access_token", newToken);
+    } else if (data.new_access_token) {
+      localStorage.setItem("access_token", data.new_access_token);
+    }
+
+    if (response.status === 401) {
+      console.warn("Session expired. Logging out...");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      window.location.href = "/login";
+      return;
+    }
       if (response.ok) {
         setMessage("Inserimento avvenuto con successo!");
         setFormData((prevFormData) => ({

@@ -83,6 +83,7 @@ export default function DownloadVolunteersData() {
 
   useEffect(() => {
     const fetchVolunteers = async () => {
+      const token = localStorage.getItem("access_token");
       const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`, {
         method: "GET",
         headers: {
@@ -90,7 +91,22 @@ export default function DownloadVolunteersData() {
           Authorization: `Bearer ${token}`,
         },
       });
-      const data = await response.json();
+      const newToken = response.headers.get("X-New-Token");
+        const data = await response.json();
+
+        if (newToken) {
+      localStorage.setItem("access_token", newToken);
+    } else if (data.new_access_token) {
+      localStorage.setItem("access_token", data.new_access_token);
+    }
+
+    if (response.status === 401) {
+      console.warn("Session expired. Logging out...");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      window.location.href = "/login";
+      return;
+    }
       try {
         if (data.volunteers && data.volunteers.length > 0) {
           console.log("First fetched volunteer:", data.volunteers[0]);
