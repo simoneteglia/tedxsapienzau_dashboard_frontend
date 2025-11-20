@@ -89,7 +89,7 @@ export default function Sidebar({ selectedVolunteerFilter }) {
             Download Dati
           </Link>
         </div>
-        <div
+        {window.location.pathname === "/home" && <div
           style={{
             backgroundColor: "rgba(238, 185, 236, 0.5)",
             borderRadius: "15px",
@@ -111,7 +111,7 @@ export default function Sidebar({ selectedVolunteerFilter }) {
                 );
               })}
           </ul>
-        </div>
+        </div>}
       </section>
     </nav>
   );
