@@ -56,7 +56,7 @@ export default function Tirocini() {
           const namesList = data.volunteers
             .filter(
               (v) =>
-                v.traineeship_status == undefined || v.traineeship_status == ""
+                (v.traineeship_status == undefined || v.traineeship_status == "") && v.is_ex_member !== true
             )
             .map((v) => ({
               id: v.student_id,
