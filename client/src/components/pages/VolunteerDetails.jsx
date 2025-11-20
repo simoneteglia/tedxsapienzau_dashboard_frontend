@@ -62,8 +62,8 @@ export default function VolunteerDetails() {
           },
         }
       );
-      const newToken = response.headers.get("X-New-Token");
-      const data = await response.json();
+      const newToken = res.headers.get("X-New-Token");
+      const data = await res.json();
 
       if (newToken) {
         localStorage.setItem("access_token", newToken);
@@ -71,7 +71,7 @@ export default function VolunteerDetails() {
         localStorage.setItem("access_token", data.new_access_token);
       }
 
-      if (response.status === 401) {
+      if (res.status === 401) {
         console.warn("Session expired. Logging out...");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
@@ -448,7 +448,7 @@ export default function VolunteerDetails() {
           Documento
         </button>
 
-        <button
+        {!volunteer.is_ex_member && <button
           style={{
             backgroundColor: "#ff0000ff",
             color: "white",
@@ -459,7 +459,7 @@ export default function VolunteerDetails() {
           onClick={() => setShowModal(true)}
         >
           Elimina
-        </button>
+        </button>}
       </div>
 
       {/* ⬇️  render modal *outside* of landing container */}
