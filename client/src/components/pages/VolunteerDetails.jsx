@@ -448,7 +448,7 @@ export default function VolunteerDetails() {
           Documento
         </button>
 
-        {!volunteer.is_ex_member && <button
+        {volunteer.is_ex_member !== true && <button
           style={{
             backgroundColor: "#ff0000ff",
             color: "white",
