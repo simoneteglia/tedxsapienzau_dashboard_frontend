@@ -77,18 +77,18 @@ export default function Landing() {
         const data = await response.json();
 
         if (newToken) {
-      localStorage.setItem("access_token", newToken);
-    } else if (data.new_access_token) {
-      localStorage.setItem("access_token", data.new_access_token);
-    }
+          localStorage.setItem("access_token", newToken);
+        } else if (data.new_access_token) {
+          localStorage.setItem("access_token", data.new_access_token);
+        }
 
-    if (response.status === 401) {
-      console.warn("Session expired. Logging out...");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      window.location.href = "/login";
-      return;
-    }
+        if (response.status === 401) {
+          console.warn("Session expired. Logging out...");
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
+          window.location.href = "/login";
+          return;
+        }
 
         if (selectedYear === "all" && data.volunteers_by_year) {
           const years = Object.keys(data.volunteers_by_year).sort(

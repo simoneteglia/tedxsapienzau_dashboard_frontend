@@ -5,16 +5,12 @@ import global from "../../global.json";
 
 function AddVolunteers() {
   const [formData, setFormData] = useState({
-    id: "",
+    name: "",
+    surname: "",
     team: "",
     status: "",
     subleader: "",
-    surname: "",
-    name: "",
     gender: "",
-    is_ex_member: "",
-    resignation_date: "",
-    notes: "",
     phone_number: "",
     personal_email: "",
     date_of_birth: "",
@@ -42,90 +38,89 @@ function AddVolunteers() {
     id_document_type: "",
     id_document_number: "",
     id_document_expiry_date: "",
+    notes: "",
   });
 
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const fetchLastId = async () => {
-      try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch(
-          `${global.CONNECTION.ENDPOINT}/volunteers`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const newToken = response.headers.get("X-New-Token");
-        const result = await response.json();
+  // useEffect(() => {
+  //   const fetchLastId = async () => {
+  //     try {
+  //       const token = localStorage.getItem("access_token");
+  //       const response = await fetch(
+  //         `${global.CONNECTION.ENDPOINT}/volunteers/by_year?year=all`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       const newToken = response.headers.get("X-New-Token");
+  //       const result = await response.json();
 
-        if (newToken) {
-      localStorage.setItem("access_token", newToken);
-    } else if (data.new_access_token) {
-      localStorage.setItem("access_token", data.new_access_token);
-    }
+  //       if (response.status === 401) {
+  //         console.warn("Session expired. Logging out...");
+  //         localStorage.removeItem("access_token");
+  //         localStorage.removeItem("refresh_token");
+  //         window.location.href = "/login";
+  //         return;
+  //       }
+  //       if (response.ok) {
+  //         const volunteers = result.all_volunteers;
+  //         const lastId =
+  //           volunteers.length > 0
+  //             ? Math.max(...volunteers.map((v) => v.id))
+  //             : 0;
 
-    if (response.status === 401) {
-      console.warn("Session expired. Logging out...");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      window.location.href = "/login";
-      return;
-    }
-        if (response.ok) {
-          const volunteers = result.volunteers;
-          const lastId =
-            volunteers.length > 0
-              ? Math.max(...volunteers.map((v) => v.id))
-              : 0;
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            id: lastId + 1,
-          }));
-        } else {
-          setMessage("Failed to fetch volunteers. Using default id.");
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            id: 1,
-          }));
-        }
-      } catch (error) {
-        setMessage("Error fetching last id. Using default id.");
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          id: 1,
-        }));
-      }
-    };
+  //         console.log("Last volunteer ID fetched:", lastId);
+  //         setFormData((prevFormData) => ({
+  //           ...prevFormData,
+  //           id: lastId + 1,
+  //         }));
+  //       } else {
+  //         setMessage("Failed to fetch volunteers. Using default id.");
+  //         setFormData((prevFormData) => ({
+  //           ...prevFormData,
+  //           id: 1,
+  //         }));
+  //       }
 
-    fetchLastId();
-  }, []);
+  //       if (newToken) {
+  //         localStorage.setItem("access_token", newToken);
+  //       } else if (data.new_access_token) {
+  //         localStorage.setItem("access_token", data.new_access_token);
+  //       }
+  //     } catch (error) {
+  //       setMessage("Error fetching last id. Using default id.");
+  //       setFormData((prevFormData) => ({
+  //         ...prevFormData,
+  //         id: 1,
+  //       }));
+  //     }
+  //   };
+
+  //   fetchLastId();
+  // }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: name === "student_id" ? Number(value) : value,
     });
   };
 
   const validateForm = () => {
     // Verifica che i campi obbligatori siano compilati
     const requiredFields = [
-      "_id",
       "team",
       "status",
       "subleader",
       "surname",
       "name",
       "gender",
-      "is_ex_member",
-      "resignation_date",
-      "notes",
       "phone_number",
       "personal_email",
       "date_of_birth",
@@ -144,7 +139,6 @@ function AddVolunteers() {
       "enrollment_year",
       "erasmus_status",
       "is_in_external_association",
-      "external_association_name",
       "date_of_joining",
       "dietary_requirements",
       "tshirt_size",
@@ -172,6 +166,13 @@ function AddVolunteers() {
       return;
     }
 
+    const payload = {
+      ...formData,
+      student_id: Number(formData.student_id),
+    };
+
+    console.log("Submitting form data:", payload);
+
     try {
       const token = localStorage.getItem("access_token");
       const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteer`, {
@@ -180,46 +181,41 @@ function AddVolunteers() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const newToken = response.headers.get("X-New-Token");
-        const result = await response.json();
+      const result = await response.json();
 
-        if (newToken) {
-      localStorage.setItem("access_token", newToken);
-    } else if (data.new_access_token) {
-      localStorage.setItem("access_token", data.new_access_token);
-    }
+      // if (newToken) {
+      //   localStorage.setItem("access_token", newToken);
+      // } else if (data.new_access_token) {
+      //   localStorage.setItem("access_token", data.new_access_token);
+      // }
 
-    if (response.status === 401) {
-      console.warn("Session expired. Logging out...");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      window.location.href = "/login";
-      return;
-    }
+      if (response.status === 401) {
+        console.warn("Session expired. Logging out...");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/login";
+        return;
+      }
       if (response.ok) {
         setMessage("Inserimento avvenuto con successo!");
-        setFormData((prevFormData) => ({
-          ...Object.keys(prevFormData).reduce((acc, key) => {
-            acc[key] = key === "id" ? prevFormData.id + 1 : "";
-            return acc;
-          }, {}),
-        }));
         alert("Inserimento avvenuto con successo!"); // Dialog di successo
+        //window.location.href = "/volunteers"; // Reindirizza alla pagina dei volontari
       } else {
         setMessage(result.message || "Failed to add volunteer.");
         alert(result.message || "Failed to add volunteer."); // Messaggio di errore
       }
     } catch (error) {
+      console.error("Error submitting form:", error);
       setMessage("Error submitting the form. Please try again.");
       alert("Errore nell'invio del form. Riprova."); // Messaggio di errore
     }
   };
 
   const labels = {
-    id: "ID",
     team: "Team di appartenenza *",
     status: "Status *",
     subleader: "Subleader *",
@@ -242,17 +238,17 @@ function AddVolunteers() {
     academic_status: "Status accademico *",
     faculty_name: "Facoltà di appartenenza * ",
     dipartimento: "Dipartimento *",
-    course_type: "Tipologia *",
-    degree_name: "Corso *",
-    enrollment_year: "Anno di iscrizione *",
+    course_type: "Corso *",
+    degree_name: "Tipologia *",
+    enrollment_year: "Anno di iscrizione in Sapienza (es: 2022) *",
     erasmus_status: "Erasmus o periodo all'estero * ",
     is_in_external_association: "Associazione esterna *",
     external_association_name: "Nome associazione",
-    date_of_joining: "Data di ingresso in associazione *",
+    date_of_joining: "Anno di ingresso in associazione (es: 2025) *",
     dietary_requirements: "Esigenze alimentari *",
     tshirt_size: "Taglia T-Shirt *",
     has_taken_tshirt: "T-Shirt presa? *",
-    id_document_link: "Documenti socio *",
+    id_document_link: "Link Documenti Socio *",
     id_document_type: "Tipo di documento *",
     id_document_number: "Numero del documento *",
     id_document_expiry_date: "Scadenza documento *",
@@ -262,9 +258,9 @@ function AddVolunteers() {
     team: ["Board", "PEM", "IT", "SEC", "ERS", "CEM", "LA", "HRA", "DEX"],
     status: ["Socio", "Supporter"],
     subleader: ["Si", "No"],
-    gender: ["F", "M", "Altro", "Preferisco non specificare"],
+    gender: ["F", "M", "Non Binario", "Preferisco non specificare"],
     is_ex_member: ["Si", "No"],
-    is_enrolled_in_sapienza: ["Si", "No", "Altro"],
+    is_enrolled_in_sapienza: ["SI", "NO", "Altro"],
     academic_status: ["Studente", "Laureato", "Dottorando", "Altro"],
     faculty_name: global.FACULTIES,
     degree_name: [
@@ -274,11 +270,22 @@ function AddVolunteers() {
       "Dottorato",
       "Altro",
     ],
-    erasmus_status: ["Lo farò", "Non lo farò"],
+    erasmus_status: ["Lo farò", "Non lo farò", "L'ho già fatto"],
     is_in_external_association: ["Si", "No"],
     tshirt_size: ["XS", "S", "M", "L", "XL", "XXL"],
     has_taken_tshirt: ["Si", "No"],
     id_document_type: ["Carta d'identità", "Patente", "Passaporto", "Altro"],
+    dietary_requirements: [
+      "Nessuna",
+      "Vegano",
+      "Vegetariano",
+      "Senza glutine",
+      "No Lattosio",
+      "No Frutta Secca",
+      "No Arachidi",
+      "Allergia al Pesce",
+      "Altro",
+    ],
   };
 
   return (
@@ -340,10 +347,10 @@ function AddVolunteers() {
               </label>
               <input
                 type={
-                  key === "data_di_nascita" ||
-                  key === "data_dimissione" ||
-                  key === "scadenza_documento"
+                  key === "date_of_birth" || key === "id_document_expiry_date"
                     ? "date"
+                    : key === "student_id"
+                    ? "number"
                     : "text"
                 }
                 id={key}
@@ -358,7 +365,6 @@ function AddVolunteers() {
                   backgroundColor: "white",
                   color: "black",
                 }}
-                disabled={key === "id"}
               />
             </div>
           )
