@@ -169,6 +169,7 @@ function AddVolunteers() {
     const payload = {
       ...formData,
       student_id: Number(formData.student_id),
+      membership_card_paid: true,
     };
 
     console.log("Submitting form data:", payload);
