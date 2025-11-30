@@ -30,7 +30,7 @@ function AddVolunteers() {
     erasmus_status: "",
     is_in_external_association: "",
     external_association_name: "",
-    date_of_joining: "",
+    date_of_joining: 2025,
     dietary_requirements: "",
     tshirt_size: "",
     has_taken_tshirt: "",
