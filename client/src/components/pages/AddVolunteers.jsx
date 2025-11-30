@@ -8,6 +8,7 @@ function AddVolunteers() {
     name: "",
     surname: "",
     team: "",
+    membership_card_paid: "SI",
     status: "",
     subleader: "",
     gender: "",
