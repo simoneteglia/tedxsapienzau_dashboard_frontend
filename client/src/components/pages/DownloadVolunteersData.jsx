@@ -36,7 +36,7 @@ export default function DownloadVolunteersData() {
     Associazioni: [
       "is_in_external_association",
       "external_association_name",
-      "date_of_joining",
+      "joining_year",
     ],
     "Preferenze ed Extra": [
       "dietary_requirements",
@@ -92,21 +92,21 @@ export default function DownloadVolunteersData() {
         },
       });
       const newToken = response.headers.get("X-New-Token");
-        const data = await response.json();
+      const data = await response.json();
 
-        if (newToken) {
-      localStorage.setItem("access_token", newToken);
-    } else if (data.new_access_token) {
-      localStorage.setItem("access_token", data.new_access_token);
-    }
+      if (newToken) {
+        localStorage.setItem("access_token", newToken);
+      } else if (data.new_access_token) {
+        localStorage.setItem("access_token", data.new_access_token);
+      }
 
-    if (response.status === 401) {
-      console.warn("Session expired. Logging out...");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      window.location.href = "/login";
-      return;
-    }
+      if (response.status === 401) {
+        console.warn("Session expired. Logging out...");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/login";
+        return;
+      }
       try {
         if (data.volunteers && data.volunteers.length > 0) {
           console.log("First fetched volunteer:", data.volunteers[0]);

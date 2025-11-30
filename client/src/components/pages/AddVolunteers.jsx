@@ -31,7 +31,7 @@ function AddVolunteers() {
     erasmus_status: "",
     is_in_external_association: "",
     external_association_name: "",
-    date_of_joining: 2025,
+    joining_year: 2025,
     dietary_requirements: "",
     tshirt_size: "",
     has_taken_tshirt: "",
@@ -140,7 +140,7 @@ function AddVolunteers() {
       "enrollment_year",
       "erasmus_status",
       "is_in_external_association",
-      "date_of_joining",
+      "joining_year",
       "dietary_requirements",
       "tshirt_size",
       "has_taken_tshirt",
@@ -241,13 +241,13 @@ function AddVolunteers() {
     academic_status: "Status accademico *",
     faculty_name: "Facoltà di appartenenza * ",
     dipartimento: "Dipartimento *",
-    course_type: "Corso *",
-    degree_name: "Tipologia *",
+    course_type: "Tipologia corso *",
+    degree_name: "Nome del corso *",
     enrollment_year: "Anno di iscrizione in Sapienza (es: 2022) *",
     erasmus_status: "Erasmus o periodo all'estero * ",
     is_in_external_association: "Associazione esterna *",
     external_association_name: "Nome associazione",
-    date_of_joining: "Anno di ingresso in associazione (es: 2025) *",
+    joining_year: "Anno di ingresso in associazione (es: 2025) *",
     dietary_requirements: "Esigenze alimentari *",
     tshirt_size: "Taglia T-Shirt *",
     has_taken_tshirt: "T-Shirt presa? *",
@@ -258,7 +258,7 @@ function AddVolunteers() {
   };
 
   const dropdownOptions = {
-    team: ["Board", "PEM", "IT", "SEC", "ERS", "CEM", "LA", "HRA", "DEX"],
+    team: ["BOARD", "PEM", "IT", "SEC", "ERS", "CEM", "LA", "HRA", "DEX"],
     status: ["Socio", "Supporter"],
     subleader: ["Si", "No"],
     gender: ["F", "M", "Non Binario", "Preferisco non specificare"],
@@ -266,7 +266,7 @@ function AddVolunteers() {
     is_enrolled_in_sapienza: ["SI", "NO", "Altro"],
     academic_status: ["Studente", "Laureato", "Dottorando", "Altro"],
     faculty_name: global.FACULTIES,
-    degree_name: [
+    course_type: [
       "Laurea Triennale",
       "Laurea Magistrale",
       "Laurea Ciclo Unico",

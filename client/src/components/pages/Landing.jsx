@@ -44,6 +44,7 @@ export default function Landing() {
   const [matriculationData, setMatriculationData] = useState({});
   const [ageData, setAgeData] = useState({});
   const [isIscrittoData, setIsIscrittoData] = useState({});
+  const [whenJoinAssociation, setWhenJoinAssociation] = useState({});
 
   const [genderData, setGenderData] = useState({});
   const [selectedYear, setSelectedYear] = useState("all");
@@ -57,6 +58,7 @@ export default function Landing() {
   const matriculationChartRef = useRef();
   const ageChartRef = useRef();
   const isIscrittoChartRef = useRef();
+  const whenJoinAssociationChartRef = useRef();
 
   useEffect(() => {
     const fetchVolunteers = async () => {
@@ -91,6 +93,7 @@ export default function Landing() {
         }
 
         if (selectedYear === "all" && data.volunteers_by_year) {
+          console.log(data);
           const years = Object.keys(data.volunteers_by_year).sort(
             (a, b) => b - a
           );
@@ -101,9 +104,7 @@ export default function Landing() {
           // volunteers active in selectedYear
           const fixed = data.volunteers.map((v) => ({
             ...v,
-            date_of_joining: v.date_of_joining
-              ? String(v.date_of_joining)
-              : "N/A",
+            joining_year: v.joining_year ? String(v.joining_year) : "N/A",
             _id: v._id ? String(v._id) : undefined,
           }));
           setAllVolunteers(fixed);
@@ -137,6 +138,7 @@ export default function Landing() {
     const genderGroups = {};
     const ageGroups = {};
     const isIscrittoGroups = {};
+    const whenJoinAssociationGroups = {};
 
     filteredVolunteers.forEach((volunteer) => {
       const faculty = volunteer["faculty_name"] || "Unknown";
@@ -163,6 +165,13 @@ export default function Landing() {
       const isIscritto = volunteer["is_enrolled_in_sapienza"] || "Unknown";
       if (!isIscrittoGroups[isIscritto]) isIscrittoGroups[isIscritto] = [];
       isIscrittoGroups[isIscritto].push(volunteer);
+
+      const dateOfJoining = volunteer["joining_year"] || "Unknown";
+      if (!whenJoinAssociationGroups[dateOfJoining])
+        whenJoinAssociationGroups[dateOfJoining] = [];
+      whenJoinAssociationGroups[dateOfJoining].push(volunteer);
+
+      console.log(whenJoinAssociationGroups);
 
       // compute volunteer age
       if (volunteer["date_of_birth"]) {
@@ -203,6 +212,7 @@ export default function Landing() {
     setGenderData(genderGroups);
     setAgeData(ageGroups);
     setIsIscrittoData(isIscrittoGroups);
+    setWhenJoinAssociation(whenJoinAssociationGroups);
   }, [selectedYear, allVolunteers, showExSocio]);
 
   const generateChartData = (data, label, sortByLabel = false) => {
@@ -628,13 +638,35 @@ export default function Landing() {
             />
           </div>
           <div style={{ width: "80%", margin: "20px auto" }}>
-            <h2>Distribuzione dei sessi</h2>
-            <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-              <Doughnut
-                data={generateGenderChartData()}
-                options={genderChartOptions}
-              />
-            </div>
+            <h2>Anno di ingresso in associazione</h2>
+            <Bar
+              data={generateChartData(
+                whenJoinAssociation,
+                "Numero di volontari per Anno di ingresso in associazione",
+                true
+              )}
+              options={{
+                ...chartOptions,
+                plugins: {
+                  ...chartOptions.plugins,
+                },
+              }}
+              ref={whenJoinAssociationChartRef}
+              onClick={(e) => {
+                const activeElements = getElementAtEvent(
+                  whenJoinAssociationChartRef.current,
+                  e
+                );
+
+                if (activeElements.length > 0) {
+                  const { index } = activeElements[0];
+                  const chart = whenJoinAssociationChartRef.current;
+                  const label = chart.data.labels[index];
+                  const volunteersForJoiningYear = whenJoinAssociation[label];
+                  setSelectedVolunteerFilter(volunteersForJoiningYear);
+                }
+              }}
+            />
           </div>
           <div style={{ width: "80%", margin: "20px auto" }}>
             <h2>Volontar* per Eta'</h2>
@@ -663,6 +695,16 @@ export default function Landing() {
               }}
             />
           </div>
+          <div style={{ width: "80%", margin: "20px auto" }}>
+            <h2>Distribuzione dei sessi</h2>
+            <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+              <Doughnut
+                data={generateGenderChartData()}
+                options={genderChartOptions}
+              />
+            </div>
+          </div>
+
           <div style={{ width: "80%", margin: "20px auto" }}>
             <h2>Luogo di nascita dei volontari</h2>
             <VolunteersMap />

@@ -298,7 +298,7 @@ export default function VolunteerDetails() {
         </p>
         <p>
           <strong>Data di Ingresso in Associazione:</strong>{" "}
-          {volunteer.date_of_joining || "N/A"}
+          {volunteer.joining_year || "N/A"}
         </p>
         <hr />
         <h3
@@ -448,18 +448,20 @@ export default function VolunteerDetails() {
           Documento
         </button>
 
-        {volunteer.is_ex_member !== true && <button
-          style={{
-            backgroundColor: "#ff0000ff",
-            color: "white",
-            padding: "10px 15px",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-          onClick={() => setShowModal(true)}
-        >
-          Elimina
-        </button>}
+        {volunteer.is_ex_member !== true && (
+          <button
+            style={{
+              backgroundColor: "#ff0000ff",
+              color: "white",
+              padding: "10px 15px",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+            onClick={() => setShowModal(true)}
+          >
+            Elimina
+          </button>
+        )}
       </div>
 
       {/* ⬇️  render modal *outside* of landing container */}

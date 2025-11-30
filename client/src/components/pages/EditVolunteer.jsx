@@ -361,8 +361,8 @@ export default function VolunteerEdit() {
           Quando Entrato:
           <input
             type="date"
-            name="date_of_joining"
-            value={volunteer.date_of_joining || ""}
+            name="joining_year"
+            value={volunteer.joining_year || ""}
             onChange={handleChange}
           />
         </label>
