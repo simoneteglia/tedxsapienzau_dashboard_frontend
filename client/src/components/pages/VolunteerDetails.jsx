@@ -151,20 +151,21 @@ export default function VolunteerDetails() {
           <div style={{ flex: 2, padding: "20px" }}>
             <h2 style={{ margin: "0" }}>
               {volunteer.name} {volunteer.surname}
-              {volunteer.subleader === "Si" && (
-                <label
-                  style={{
-                    backgroundColor: "#4CAF50",
-                    color: "white",
-                    fontSize: "18px",
-                    padding: "10px 15px",
-                    borderRadius: "5px",
-                    marginLeft: "20px",
-                  }}
-                >
-                  Subleader
-                </label>
-              )}
+              {volunteer.subleader === "SI" ||
+                (volunteer.subleader === "Si" && (
+                  <label
+                    style={{
+                      backgroundColor: "#4CAF50",
+                      color: "white",
+                      fontSize: "18px",
+                      padding: "10px 15px",
+                      borderRadius: "5px",
+                      marginLeft: "20px",
+                    }}
+                  >
+                    Subleader
+                  </label>
+                ))}
             </h2>
             <p>
               <strong>Team:</strong> {volunteer.team || "N/A"}
