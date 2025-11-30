@@ -223,6 +223,7 @@ function AddVolunteers() {
     subleader: "Subleader *",
     surname: "Cognome *",
     name: "Nome *",
+    membership_card_paid: "Tessera Socio Pagata",
     gender: "Genere *",
     is_ex_member: "Ex socio *",
     resignation_date: "Data di dimissione",
