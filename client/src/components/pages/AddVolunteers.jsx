@@ -169,7 +169,7 @@ function AddVolunteers() {
     const payload = {
       ...formData,
       student_id: Number(formData.student_id),
-      membership_card_paid: true,
+      membership_card_paid: "SI",
     };
 
     console.log("Submitting form data:", payload);
@@ -204,7 +204,7 @@ function AddVolunteers() {
       if (response.ok) {
         setMessage("Inserimento avvenuto con successo!");
         alert("Inserimento avvenuto con successo!"); // Dialog di successo
-        //window.location.href = "/volunteers"; // Reindirizza alla pagina dei volontari
+        window.location.href = "/volunteers"; // Reindirizza alla pagina dei volontari
       } else {
         setMessage(result.message || "Failed to add volunteer.");
         alert(result.message || "Failed to add volunteer."); // Messaggio di errore
