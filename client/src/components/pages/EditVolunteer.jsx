@@ -405,6 +405,25 @@ export default function VolunteerEdit() {
           </select>
         </label>
 
+        <label>
+          Link documenti{" "}
+          <input
+            type="text"
+            name="id_document_link"
+            value={volunteer.id_document_link || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Link atto di adesione{" "}
+          <input
+            type="text"
+            name="join_association_document_link"
+            value={volunteer.join_association_document_link || ""}
+            onChange={handleChange}
+          />
+        </label>
+
         {/* Sezione dimissione */}
         <label>
           Ex Socio:

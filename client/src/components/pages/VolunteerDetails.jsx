@@ -355,6 +355,21 @@ export default function VolunteerDetails() {
           <strong>Scadenza Documento:</strong>{" "}
           {volunteer.id_document_expiry_date || "N/A"}
         </p>
+        <p>
+          <strong>Atto di Adesione Associazione:</strong>{" "}
+          {volunteer.join_association_document_link ? (
+            <a
+              href={volunteer.join_association_document_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "blue", textDecoration: "underline" }}
+            >
+              Visualizza Atto di Adesione
+            </a>
+          ) : (
+            "N/A"
+          )}
+        </p>
         <hr />
         <h3
           style={{

@@ -39,6 +39,7 @@ function AddVolunteers() {
     id_document_type: "",
     id_document_number: "",
     id_document_expiry_date: "",
+    join_association_document_link: "",
     notes: "",
   });
 
@@ -148,6 +149,7 @@ function AddVolunteers() {
       "id_document_type",
       "id_document_number",
       "id_document_expiry_date",
+      "join_association_document_link",
     ];
 
     for (let field of requiredFields) {
@@ -255,6 +257,7 @@ function AddVolunteers() {
     id_document_type: "Tipo di documento *",
     id_document_number: "Numero del documento *",
     id_document_expiry_date: "Scadenza documento *",
+    join_association_document_link: "Link Atto di Adesione *",
   };
 
   const dropdownOptions = {
