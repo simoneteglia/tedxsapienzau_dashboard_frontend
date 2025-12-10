@@ -101,9 +101,11 @@ const router = createBrowserRouter([
 function SidebarLayout() {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [selectedVolunteerFilter, setSelectedVolunteerFilter] = useState(null);
+  const isAdmin = localStorage.getItem("is_admin") === "true";
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleResize = () => {
@@ -112,7 +114,10 @@ function SidebarLayout() {
 
   return (
     <div style={{ display: "flex" }}>
-      <Sidebar selectedVolunteerFilter={selectedVolunteerFilter} />
+      <Sidebar
+        selectedVolunteerFilter={selectedVolunteerFilter}
+        isAdmin={isAdmin}
+      />
       <div
         id="outlet-container"
         style={{
@@ -128,7 +133,12 @@ function SidebarLayout() {
           style={{ width: "100%", height: "100%", backgroundColor: "red" }}
         ></div> */}
         <Outlet
-          context={[windowSize, setWindowSize, setSelectedVolunteerFilter]}
+          context={[
+            windowSize,
+            setWindowSize,
+            setSelectedVolunteerFilter,
+            isAdmin,
+          ]}
         />
       </div>
     </div>

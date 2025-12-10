@@ -26,6 +26,7 @@ export default function Login() {
       if (data.success) {
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("refresh_token", data.refresh_token);
+        localStorage.setItem("is_admin", data.is_admin ? "true" : "false");
 
         window.location.href = "/";
       } else {

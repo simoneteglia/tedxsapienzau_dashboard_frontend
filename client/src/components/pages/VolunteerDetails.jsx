@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import "../../assets/styles/landing.css";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 import image from "../../assets/images/user.jpg";
 import global from "../../global.json";
 import Link from "@mui/material/Link";
@@ -14,6 +13,7 @@ export default function VolunteerDetails() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
+  const { isAdmin } = useOutletContext() || { isAdmin: false };
 
   useEffect(() => {
     const fetchVolunteer = async () => {
@@ -436,19 +436,21 @@ export default function VolunteerDetails() {
 
         <hr />
 
-        <button
-          style={{
-            backgroundColor: "#FFA500",
-            color: "white",
-            padding: "10px 15px",
-            borderRadius: "5px",
-            cursor: "pointer",
-            marginRight: 8,
-          }}
-          onClick={() => navigate(`/volunteer/edit/${id}`)}
-        >
-          Modifica
-        </button>
+        {isAdmin && (
+          <button
+            style={{
+              backgroundColor: "#FFA500",
+              color: "white",
+              padding: "10px 15px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginRight: 8,
+            }}
+            onClick={() => navigate(`/volunteer/edit/${id}`)}
+          >
+            Modifica
+          </button>
+        )}
 
         <button
           style={{
@@ -464,7 +466,7 @@ export default function VolunteerDetails() {
           Documento
         </button>
 
-        {volunteer.is_ex_member !== true && (
+        {volunteer.is_ex_member !== true && isAdmin && (
           <button
             style={{
               backgroundColor: "#ff0000ff",

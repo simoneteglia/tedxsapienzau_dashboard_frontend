@@ -6,6 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { it } from "date-fns/locale";
+import { useOutletContext } from "react-router-dom";
 
 import plusCircle from "../../assets/images/plus-circle.svg";
 import trashbin from "../../assets/images/trashbin.svg";
@@ -24,6 +25,7 @@ export default function Tirocini() {
   const [names, setNames] = useState([]);
   const [selectedVolunteer, setSelectedVolunteer] = useState("");
   const token = localStorage.getItem("access_token");
+  const { isAdmin } = useOutletContext() || { isAdmin: false };
 
   useEffect(() => {
     const fetchVolunteers = async () => {
@@ -36,27 +38,29 @@ export default function Tirocini() {
         },
       });
       const newToken = response.headers.get("X-New-Token");
-        const data = await response.json();
+      const data = await response.json();
 
-        if (newToken) {
-      localStorage.setItem("access_token", newToken);
-    } else if (data.new_access_token) {
-      localStorage.setItem("access_token", data.new_access_token);
-    }
+      if (newToken) {
+        localStorage.setItem("access_token", newToken);
+      } else if (data.new_access_token) {
+        localStorage.setItem("access_token", data.new_access_token);
+      }
 
-    if (response.status === 401) {
-      console.warn("Session expired. Logging out...");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      window.location.href = "/login";
-      return;
-    }
+      if (response.status === 401) {
+        console.warn("Session expired. Logging out...");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/login";
+        return;
+      }
       try {
         if (data.volunteers && data.volunteers.length > 0) {
           const namesList = data.volunteers
             .filter(
               (v) =>
-                (v.traineeship_status == undefined || v.traineeship_status == "") && v.is_ex_member !== true
+                (v.traineeship_status == undefined ||
+                  v.traineeship_status == "") &&
+                v.is_ex_member !== true
             )
             .map((v) => ({
               id: v.student_id,
@@ -126,7 +130,7 @@ export default function Tirocini() {
               alt="Concludi tirocinio"
               onClick={async () => {
                 console.log(student_id);
-                
+
                 const volunteer = await fetch(
                   `${global.CONNECTION.ENDPOINT}/volunteer?id=${student_id}`,
                   {
@@ -236,25 +240,27 @@ export default function Tirocini() {
       >
         <div style={{ position: "relative" }}>
           <h1 className="volunteers-title">Tirocini</h1>
-          <p
-            style={{
-              position: "absolute",
-              right: 0,
-              top: 0,
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer",
-              gap: "10px",
-            }}
-            onClick={() => setIsAdding(!isAdding)}
-          >
-            <img
-              src={plusCircle}
-              style={{ color: "black" }}
-              alt="Add Volunteer"
-            />
-            Aggiungi Tirocinio
-          </p>
+          {isAdmin && (
+            <p
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                gap: "10px",
+              }}
+              onClick={() => setIsAdding(!isAdding)}
+            >
+              <img
+                src={plusCircle}
+                style={{ color: "black" }}
+                alt="Add Volunteer"
+              />
+              Aggiungi Tirocinio
+            </p>
+          )}
         </div>
         <div className="volunteers-list">
           {withTirocinio.length === 0 && (

@@ -9,7 +9,7 @@ import downloadArrow from "../../assets/images/down_arrow.svg";
 import work from "../../assets/images/work.svg";
 import "../../assets/styles/sidebar.css";
 
-export default function Sidebar({ selectedVolunteerFilter }) {
+export default function Sidebar({ selectedVolunteerFilter, isAdmin }) {
   const location = useLocation();
 
   useEffect(() => {
@@ -64,18 +64,21 @@ export default function Sidebar({ selectedVolunteerFilter }) {
             />
             Tirocini
           </Link>
-          <Link
-            className="sidebar-button"
-            to="/add-volunteer"
-            id="add-volunteer"
-          >
-            <img
-              src={plusCircle}
-              style={{ color: "black" }}
-              alt="Add Volunteer"
-            />
-            Aggiungi Volontario
-          </Link>
+          {isAdmin && (
+            <Link
+              className="sidebar-button"
+              to="/add-volunteer"
+              id="add-volunteer"
+            >
+              <img
+                src={plusCircle}
+                style={{ color: "black" }}
+                alt="Add Volunteer"
+              />
+              Aggiungi Volontario
+            </Link>
+          )}
+
           <Link
             className="sidebar-button"
             to="/download-volunteers-data"
@@ -89,29 +92,31 @@ export default function Sidebar({ selectedVolunteerFilter }) {
             Download Dati
           </Link>
         </div>
-        {window.location.pathname === "/home" && <div
-          style={{
-            backgroundColor: "rgba(238, 185, 236, 0.5)",
-            borderRadius: "15px",
-            paddingLeft: "15px",
-            overflow: "scroll",
-            maxHeight: "500px",
-          }}
-        >
-          <p>
-            <b>Volontari selezionati ⬇️</b>
-          </p>
-          <ul>
-            {selectedVolunteerFilter != null &&
-              selectedVolunteerFilter.map((v) => {
-                return (
-                  <li key={v._id}>
-                    {v.name} {v.surname}
-                  </li>
-                );
-              })}
-          </ul>
-        </div>}
+        {window.location.pathname === "/home" && (
+          <div
+            style={{
+              backgroundColor: "rgba(238, 185, 236, 0.5)",
+              borderRadius: "15px",
+              paddingLeft: "15px",
+              overflow: "scroll",
+              maxHeight: "500px",
+            }}
+          >
+            <p>
+              <b>Volontari selezionati ⬇️</b>
+            </p>
+            <ul>
+              {selectedVolunteerFilter != null &&
+                selectedVolunteerFilter.map((v) => {
+                  return (
+                    <li key={v._id}>
+                      {v.name} {v.surname}
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
+        )}
       </section>
     </nav>
   );
