@@ -79,18 +79,20 @@ export default function Sidebar({ selectedVolunteerFilter, isAdmin }) {
             </Link>
           )}
 
-          <Link
-            className="sidebar-button"
-            to="/download-volunteers-data"
-            id="download-volunteers-data"
-          >
-            <img
-              src={downloadArrow}
-              style={{ color: "black" }}
-              alt="Download Dati"
-            />
-            Download Dati
-          </Link>
+          {isAdmin && (
+            <Link
+              className="sidebar-button"
+              to="/download-volunteers-data"
+              id="download-volunteers-data"
+            >
+              <img
+                src={downloadArrow}
+                style={{ color: "black" }}
+                alt="Download Dati"
+              />
+              Download Dati
+            </Link>
+          )}
         </div>
         {window.location.pathname === "/home" && (
           <div
