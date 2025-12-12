@@ -13,7 +13,7 @@ export default function VolunteerDetails() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
-  const { isAdmin } = useOutletContext() || { isAdmin: false };
+  const [isAdmin] = useOutletContext();
 
   useEffect(() => {
     const fetchVolunteer = async () => {

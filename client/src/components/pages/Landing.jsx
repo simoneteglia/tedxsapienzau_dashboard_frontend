@@ -93,7 +93,6 @@ export default function Landing() {
         }
 
         if (selectedYear === "all" && data.volunteers_by_year) {
-          console.log(data);
           const years = Object.keys(data.volunteers_by_year).sort(
             (a, b) => b - a
           );
@@ -171,8 +170,6 @@ export default function Landing() {
         whenJoinAssociationGroups[dateOfJoining] = [];
       whenJoinAssociationGroups[dateOfJoining].push(volunteer);
 
-      console.log(whenJoinAssociationGroups);
-
       // compute volunteer age
       if (volunteer["date_of_birth"]) {
         const birthYear = parseInt(
@@ -218,6 +215,24 @@ export default function Landing() {
   const generateChartData = (data, label, sortByLabel = false) => {
     const labels = Object.keys(data);
     const counts = Object.values(data).map((group) => group.length);
+
+    const teamColors = {
+      IT: global.COLORS.IT,
+      DEX: global.COLORS.DEX,
+      CEM: global.COLORS.CEM,
+      LA: global.COLORS.LA,
+      ERS: global.COLORS.ERS,
+      PEM: global.COLORS.PEM,
+      SEC: global.COLORS.SEC,
+      HRA: global.COLORS.HRA,
+    };
+
+    const backgroundColors = labels.map((label) => {
+      if (label === "volunteers_per_team") {
+        return teamColors[label];
+      }
+      return "#eb0028";
+    });
 
     const combinedData = labels.map((label, index) => ({
       label,
@@ -551,7 +566,7 @@ export default function Landing() {
           <div style={{ width: "80%", margin: "20px auto" }}>
             <h2>Volontari per Team</h2>
             <Bar
-              data={generateChartData(teamData, "Numero di volontari per Team")}
+              data={generateChartData(teamData, "volunteers_per_team")}
               options={{
                 ...chartOptions,
                 plugins: {

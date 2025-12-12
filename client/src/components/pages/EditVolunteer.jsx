@@ -188,6 +188,24 @@ export default function VolunteerEdit() {
 
         {/* Informazioni personali */}
         <label>
+          Numero di Telefono:
+          <input
+            type="text"
+            name="phone_number"
+            value={volunteer.phone_number || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Email Personale:
+          <input
+            type="email"
+            name="personal_email"
+            value={volunteer.personal_email || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
           Data di Nascita:
           <input
             type="date"
@@ -292,6 +310,15 @@ export default function VolunteerEdit() {
           </select>
         </label>
         <label>
+          Dipartimento:{" "}
+          <input
+            type="text"
+            name="department_name"
+            value={volunteer.department_name || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
           Corso di Laurea:
           <input
             type="text"
@@ -316,7 +343,7 @@ export default function VolunteerEdit() {
           </select>
         </label>
         <label>
-          Anno di Iscrizione:
+          Anno di Iscrizione in Sapienza:{" "}
           <input
             type="number"
             name="enrollment_year"
@@ -358,7 +385,7 @@ export default function VolunteerEdit() {
           />
         </label>
         <label>
-          Quando Entrato:
+          Quando Entrato in SapienzaU:{" "}
           <input
             type="date"
             name="joining_year"
@@ -378,7 +405,7 @@ export default function VolunteerEdit() {
           />
         </label>
         <label>
-          Genere:
+          Taglia Maglietta:
           <select
             name="tshirt_size"
             value={volunteer.tshirt_size || ""}

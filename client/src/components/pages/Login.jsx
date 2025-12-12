@@ -28,6 +28,8 @@ export default function Login() {
         localStorage.setItem("refresh_token", data.refresh_token);
         localStorage.setItem("is_admin", data.is_admin ? "true" : "false");
 
+        console.log(data);
+
         window.location.href = "/";
       } else {
         console.log("Login failed:", data.message);
