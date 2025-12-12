@@ -64,20 +64,18 @@ export default function Sidebar({ selectedVolunteerFilter, isAdmin }) {
             />
             Tirocini
           </Link>
-          {isAdmin && (
-            <Link
-              className="sidebar-button"
-              to="/add-volunteer"
-              id="add-volunteer"
-            >
-              <img
-                src={plusCircle}
-                style={{ color: "black" }}
-                alt="Add Volunteer"
-              />
-              Aggiungi Volontario
-            </Link>
-          )}
+          <Link
+            className="sidebar-button"
+            to="/add-volunteer"
+            id="add-volunteer"
+          >
+            <img
+              src={plusCircle}
+              style={{ color: "black" }}
+              alt="Add Volunteer"
+            />
+            Aggiungi Volontario
+          </Link>
 
           {isAdmin && (
             <Link

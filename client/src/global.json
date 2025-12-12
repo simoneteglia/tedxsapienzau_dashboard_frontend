@@ -3,7 +3,15 @@
     "ENDPOINT": "https://tedxsapienzau-dashboard-backend.onrender.com"
   },
   "COLORS": {
-    "LIGHTGRAY": "rgb(245, 247, 249)"
+    "LIGHTGRAY": "rgb(245, 247, 249)",
+    "DEX": "#fab732",
+    "IT": "#f07e2a",
+    "SEC": "#95c459",
+    "PEM": "#bb5c9e",
+    "LA": "#21bcef",
+    "ERS": "#f089b7",
+    "HRA": "#2884c7",
+    "CEM": "#e9493a"
   },
   "FACULTIES": [
     "Architettura",
