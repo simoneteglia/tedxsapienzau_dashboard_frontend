@@ -62,19 +62,19 @@ export default function Volunteers() {
       const data = await response.json();
 
       if (newToken) {
-      localStorage.setItem("access_token", newToken);
-    } else if (data.new_access_token) {
-      localStorage.setItem("access_token", data.new_access_token);
-    }
+        localStorage.setItem("access_token", newToken);
+      } else if (data.new_access_token) {
+        localStorage.setItem("access_token", data.new_access_token);
+      }
 
-    if (response.status === 401) {
-      console.warn("Session expired. Logging out...");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      window.location.href = "/login";
-      return;
-    }
-    
+      if (response.status === 401) {
+        console.warn("Session expired. Logging out...");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/login";
+        return;
+      }
+
       try {
         if (data.volunteers && data.volunteers.length > 0) {
           data.volunteers.sort((a, b) => {
@@ -88,6 +88,9 @@ export default function Volunteers() {
             (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
           );
           setFilteredVolunteers(active);
+
+          // save volunteers to localStorage
+          localStorage.setItem("volunteers", JSON.stringify(data.volunteers));
         } else {
           console.log("No volunteers found");
         }
@@ -96,7 +99,16 @@ export default function Volunteers() {
       }
     };
 
-    fetchVolunteers();
+    if (localStorage.getItem("volunteers")) {
+      const storedVolunteers = JSON.parse(localStorage.getItem("volunteers"));
+      setVolunteers(storedVolunteers);
+      const active = storedVolunteers.filter(
+        (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
+      );
+      setFilteredVolunteers(active);
+    } else {
+      fetchVolunteers();
+    }
   }, []);
 
   const handleSearch = (event) => {
