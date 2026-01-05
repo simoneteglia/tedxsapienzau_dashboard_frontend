@@ -1,6 +1,6 @@
 {
   "CONNECTION": {
-    "ENDPOINT": "https://tedxsapienzau-dashboard-backend.onrender.com"
+    "ENDPOINT": "https://tedxsapienzau-dashboard-backend.onrender.com/api/dashboard"
   },
   "COLORS": {
     "LIGHTGRAY": "rgb(245, 247, 249)",
