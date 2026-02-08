@@ -51,15 +51,20 @@ export default function Volunteers() {
   useEffect(() => {
     const fetchVolunteers = async () => {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${global.CONNECTION.ENDPOINT}/volunteers/by_year?year=all`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       const newToken = response.headers.get("X-New-Token");
       const data = await response.json();
+
+      console.log(data);
 
       if (newToken) {
         localStorage.setItem("access_token", newToken);
@@ -76,16 +81,16 @@ export default function Volunteers() {
       }
 
       try {
-        if (data.volunteers && data.volunteers.length > 0) {
-          data.volunteers.sort((a, b) => {
+        if (data.all_volunteers && data.all_volunteers.length > 0) {
+          data.all_volunteers.sort((a, b) => {
             if (a.team === "BOARD" && b.team !== "BOARD") return -1;
             if (a.team !== "BOARD" && b.team === "BOARD") return 1;
             return 0;
           });
 
-          setVolunteers(data.volunteers);
-          const active = data.volunteers.filter(
-            (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
+          setVolunteers(data.all_volunteers);
+          const active = data.all_volunteers.filter(
+            (v) => v.is_ex_member !== true && v.is_ex_member !== "Si",
           );
           setFilteredVolunteers(active);
 
@@ -99,16 +104,7 @@ export default function Volunteers() {
       }
     };
 
-    if (localStorage.getItem("volunteers")) {
-      const storedVolunteers = JSON.parse(localStorage.getItem("volunteers"));
-      setVolunteers(storedVolunteers);
-      const active = storedVolunteers.filter(
-        (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
-      );
-      setFilteredVolunteers(active);
-    } else {
-      fetchVolunteers();
-    }
+    fetchVolunteers();
   }, []);
 
   const handleSearch = (event) => {
@@ -134,12 +130,12 @@ export default function Volunteers() {
 
     if (!includeExSocio) {
       filtered = filtered.filter(
-        (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
+        (v) => v.is_ex_member !== true && v.is_ex_member !== "Si",
       );
     }
 
     filtered = filtered.filter((volunteer) =>
-      `${volunteer.name} ${volunteer.surname}`.toLowerCase().includes(search)
+      `${volunteer.name} ${volunteer.surname}`.toLowerCase().includes(search),
     );
 
     if (team) {
@@ -216,10 +212,10 @@ export default function Volunteers() {
                     volunteer.is_ex_member === "Si"
                       ? "linear-gradient(135deg, #ff9999 20%, #ff3333 80%)"
                       : volunteer.team === "BOARD"
-                      ? "linear-gradient(to right, rgba(255, 255, 255, 0.4) 0 100%), url(/gradient-bg3.jpg)"
-                      : `radial-gradient(circle at bottom right, ${
-                          teamColors[volunteer.team]
-                        }30 0%, transparent 50%), url('/noise.png')`,
+                        ? "linear-gradient(to right, rgba(255, 255, 255, 0.4) 0 100%), url(/gradient-bg3.jpg)"
+                        : `radial-gradient(circle at bottom right, ${
+                            teamColors[volunteer.team]
+                          }30 0%, transparent 50%), url('/noise.png')`,
                   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                   height: "150px",
                   borderRadius: "20px",

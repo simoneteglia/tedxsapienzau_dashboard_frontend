@@ -31,7 +31,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ChartDataLabels
+  ChartDataLabels,
 );
 
 export default function Landing() {
@@ -78,6 +78,8 @@ export default function Landing() {
         const newToken = response.headers.get("X-New-Token");
         const data = await response.json();
 
+        console.log(data);
+
         if (newToken) {
           localStorage.setItem("access_token", newToken);
         } else if (data.new_access_token) {
@@ -94,7 +96,7 @@ export default function Landing() {
 
         if (selectedYear === "all" && data.volunteers_by_year) {
           const years = Object.keys(data.volunteers_by_year).sort(
-            (a, b) => b - a
+            (a, b) => b - a,
           );
           setAvailableYears(years);
           // Use backend's unique list
@@ -126,7 +128,7 @@ export default function Landing() {
 
     if (!showExSocio) {
       filteredVolunteers = filteredVolunteers.filter(
-        (v) => v.is_ex_member !== true && v.is_ex_member !== "Si"
+        (v) => v.is_ex_member !== true && v.is_ex_member !== "Si",
       );
     }
 
@@ -174,7 +176,7 @@ export default function Landing() {
       if (volunteer["date_of_birth"]) {
         const birthYear = parseInt(
           volunteer["date_of_birth"].split("/")[2], //data_di_nascita = DD/MM/YYYY
-          10
+          10,
         );
         if (!isNaN(birthYear)) {
           const currentYear = new Date().getFullYear();
@@ -368,7 +370,7 @@ export default function Landing() {
             const value = context.raw;
             const total = context.dataset.data.reduce(
               (acc, curr) => acc + curr,
-              0
+              0,
             );
             const percentage = ((value / total) * 100).toFixed(1);
             return `${context.label}: ${value} (${percentage}%)`;
@@ -380,7 +382,7 @@ export default function Landing() {
         formatter: (value, context) => {
           const total = context.dataset.data.reduce(
             (acc, curr) => acc + curr,
-            0
+            0,
           );
           const percentage = ((value / total) * 100).toFixed(1);
           return `${percentage}%`;
@@ -449,7 +451,7 @@ export default function Landing() {
           <strong>
             {Object.values(facultyData).reduce(
               (total, group) => total + group.length,
-              0
+              0,
             )}
           </strong>
         </div>
@@ -465,13 +467,13 @@ export default function Landing() {
               data={{
                 ...generateChartData(
                   isIscrittoData,
-                  "Numero di volontari iscritti in Sapienza"
+                  "Numero di volontari iscritti in Sapienza",
                 ),
                 datasets: [
                   {
                     ...generateChartData(
                       isIscrittoData,
-                      "Numero di volontari iscritti in Sapienza"
+                      "Numero di volontari iscritti in Sapienza",
                     ).datasets[0],
                     backgroundColor: [
                       "rgba(76, 175, 80, 0.7)", // green
@@ -496,7 +498,7 @@ export default function Landing() {
               onClick={(e) => {
                 const activeElements = getElementAtEvent(
                   isIscrittoChartRef.current,
-                  e
+                  e,
                 );
 
                 if (activeElements.length > 0) {
@@ -514,13 +516,13 @@ export default function Landing() {
             <Bar
               data={generateChartData(
                 facultyData,
-                "Numero di volontari per Facoltà"
+                "Numero di volontari per Facoltà",
               )}
               ref={facultyChartRef}
               onClick={(e) => {
                 const activeElements = getElementAtEvent(
                   facultyChartRef.current,
-                  e
+                  e,
                 );
 
                 if (activeElements.length > 0) {
@@ -533,7 +535,7 @@ export default function Landing() {
                   console.log(`Faculty: ${label}`);
                   console.log(
                     "Volunteers in this faculty:",
-                    volunteersForFaculty
+                    volunteersForFaculty,
                   );
 
                   setSelectedVolunteerFilter(volunteersForFaculty);
@@ -577,7 +579,7 @@ export default function Landing() {
               onClick={(e) => {
                 const activeElements = getElementAtEvent(
                   teamChartRef.current,
-                  e
+                  e,
                 );
 
                 if (activeElements.length > 0) {
@@ -596,7 +598,7 @@ export default function Landing() {
             <Bar
               data={generateChartData(
                 degreeData,
-                "Numero di volontari per Tipologia di Laurea"
+                "Numero di volontari per Tipologia di Laurea",
               )}
               options={{
                 ...chartOptions,
@@ -608,7 +610,7 @@ export default function Landing() {
               onClick={(e) => {
                 const activeElements = getElementAtEvent(
                   degreeChartRef.current,
-                  e
+                  e,
                 );
 
                 if (activeElements.length > 0) {
@@ -627,7 +629,7 @@ export default function Landing() {
               data={generateChartData(
                 matriculationData,
                 "Numero di volontari per Anno di Immatricolazione",
-                true
+                true,
               )}
               options={{
                 ...chartOptions,
@@ -639,7 +641,7 @@ export default function Landing() {
               onClick={(e) => {
                 const activeElements = getElementAtEvent(
                   matriculationChartRef.current,
-                  e
+                  e,
                 );
 
                 if (activeElements.length > 0) {
@@ -658,7 +660,7 @@ export default function Landing() {
               data={generateChartData(
                 whenJoinAssociation,
                 "Numero di volontari per Anno di ingresso in associazione",
-                true
+                true,
               )}
               options={{
                 ...chartOptions,
@@ -670,7 +672,7 @@ export default function Landing() {
               onClick={(e) => {
                 const activeElements = getElementAtEvent(
                   whenJoinAssociationChartRef.current,
-                  e
+                  e,
                 );
 
                 if (activeElements.length > 0) {
@@ -697,7 +699,7 @@ export default function Landing() {
               onClick={(e) => {
                 const activeElements = getElementAtEvent(
                   ageChartRef.current,
-                  e
+                  e,
                 );
 
                 if (activeElements.length > 0) {
