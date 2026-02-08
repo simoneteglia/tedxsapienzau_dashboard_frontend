@@ -58,12 +58,20 @@ export default function DownloadVolunteersData() {
   };
 
   const [volunteers, setVolunteers] = useState([]);
-  const [selectedFields, setSelectedFields] = useState([]);
+  const [selectedFields, setSelectedFields] = useState([
+    ...sections["Informazioni Personali"],
+    ...sections["Informazioni Accademiche"],
+    ...sections["Associazioni"],
+    ...sections["Preferenze ed Extra"],
+    ...sections["Documenti"],
+    ...sections["Informazioni Tirocinio"],
+    ...sections["Note"],
+  ]);
   const [expandedSections, setExpandedSections] = useState(
     Object.keys(sections).reduce((acc, section) => {
       acc[section] = false; // start collapsed
       return acc;
-    }, {})
+    }, {}),
   );
   const [selectedTeam, setSelectedTeam] = useState("all");
   const [fileName, setFileName] = useState("volunteers");
@@ -84,15 +92,20 @@ export default function DownloadVolunteersData() {
   useEffect(() => {
     const fetchVolunteers = async () => {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`${global.CONNECTION.ENDPOINT}/volunteers`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${global.CONNECTION.ENDPOINT}/volunteers/by_year?year=all`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       const newToken = response.headers.get("X-New-Token");
       const data = await response.json();
+
+      console.log(data);
 
       if (newToken) {
         localStorage.setItem("access_token", newToken);
@@ -108,9 +121,9 @@ export default function DownloadVolunteersData() {
         return;
       }
       try {
-        if (data.volunteers && data.volunteers.length > 0) {
-          console.log("First fetched volunteer:", data.volunteers[0]);
-          setVolunteers(data.volunteers);
+        if (data.all_volunteers && data.all_volunteers.length > 0) {
+          console.log("First fetched volunteer:", data.all_volunteers[0]);
+          setVolunteers(data.all_volunteers);
         } else {
           console.log("No volunteers found");
         }
@@ -153,9 +166,13 @@ export default function DownloadVolunteersData() {
 
     const filtered = volunteers.filter((v) => {
       const teamMatch = selectedTeam === "all" || v.team === selectedTeam;
-      const activeMatch = v.is_ex_member === false; // excluding former members
+      const activeMatch = v.is_ex_member !== true;
       return teamMatch && activeMatch;
     });
+
+    console.log(volunteers);
+    console.log("Filtered: ", filtered);
+    console.log(selectedFields);
 
     const data = filtered.map((v) => {
       const obj = {};
@@ -186,7 +203,7 @@ export default function DownloadVolunteersData() {
     } else if (fileType === "txt") {
       content = data
         .map((row) =>
-          selectedFields.map((field) => `${field}: ${row[field]}`).join("\n")
+          selectedFields.map((field) => `${field}: ${row[field]}`).join("\n"),
         )
         .join("\n\n");
       mimeType = "text/plain;charset=utf-8;";
@@ -207,7 +224,7 @@ export default function DownloadVolunteersData() {
     const extension = fileType.startsWith(".") ? fileType : `.${fileType}`;
     saveAs(
       blob,
-      fileName.endsWith(extension) ? fileName : `${fileName}${extension}`
+      fileName.endsWith(extension) ? fileName : `${fileName}${extension}`,
     );
   };
 
@@ -302,7 +319,7 @@ export default function DownloadVolunteersData() {
                           setSelectedFields((prev) =>
                             prev.includes(field)
                               ? prev.filter((f) => f !== field)
-                              : [...prev, field]
+                              : [...prev, field],
                           )
                         }
                         style={{ marginRight: "6px" }}
