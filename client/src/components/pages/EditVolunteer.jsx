@@ -22,7 +22,7 @@ export default function VolunteerEdit() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         const newToken = response.headers.get("X-New-Token");
         const data = await response.json();
@@ -65,7 +65,7 @@ export default function VolunteerEdit() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(volunteer),
-        }
+        },
       );
       const newToken = response.headers.get("X-New-Token");
       const result = await response.json();
