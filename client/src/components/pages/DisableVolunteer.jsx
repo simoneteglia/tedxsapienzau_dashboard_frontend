@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 
-export default function DisableVolunteerModal({ volunteer, onConfirm, onCancel }) {
+export default function DisableVolunteerModal({
+  volunteer,
+  onConfirm,
+  onCancel,
+}) {
   const [confirmationText, setConfirmationText] = useState("");
-  const expected = (volunteer?.name || "").toLowerCase();
+  const expected = (volunteer?.name || "").trim().toLowerCase();
 
   const handleConfirm = () => {
     if (confirmationText.trim().toLowerCase() === expected && expected) {
@@ -27,11 +31,11 @@ export default function DisableVolunteerModal({ volunteer, onConfirm, onCancel }
         alignItems: "center",
         zIndex: 9999,
       }}
-      onClick={onCancel} 
+      onClick={onCancel}
     >
       {/* Modal box */}
       <div
-        onClick={(e) => e.stopPropagation()} 
+        onClick={(e) => e.stopPropagation()}
         style={{
           backgroundColor: "white",
           borderRadius: "10px",
@@ -45,9 +49,9 @@ export default function DisableVolunteerModal({ volunteer, onConfirm, onCancel }
         <h2 style={{ color: "#d32f2f", marginBottom: "16px" }}>
           Elimina volontario
         </h2>
-        <p style={{ marginBottom: "12px", color:"#000"}}>
+        <p style={{ marginBottom: "12px", color: "#000" }}>
           Per confermare l'eliminazione di{" "}
-          <strong>{volunteer.name}</strong>, scrivi il suo nome:
+          <strong>{volunteer.name.trim()}</strong>, scrivi il suo nome:
         </p>
 
         <input
@@ -65,7 +69,9 @@ export default function DisableVolunteerModal({ volunteer, onConfirm, onCancel }
           }}
         />
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
+        >
           <button
             onClick={onCancel}
             style={{
@@ -97,7 +103,6 @@ export default function DisableVolunteerModal({ volunteer, onConfirm, onCancel }
         </div>
       </div>
 
-      
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: scale(0.95); }
