@@ -25,7 +25,8 @@ export default function Tirocini() {
   const [names, setNames] = useState([]);
   const [selectedVolunteer, setSelectedVolunteer] = useState("");
   const token = localStorage.getItem("access_token");
-  const { isAdmin } = useOutletContext() || { isAdmin: false };
+  const [windowSize, setWindowSize, setSelectedVolunteerFilter, isAdmin] =
+    useOutletContext();
 
   useEffect(() => {
     const fetchVolunteers = async () => {
@@ -60,7 +61,7 @@ export default function Tirocini() {
               (v) =>
                 (v.traineeship_status == undefined ||
                   v.traineeship_status == "") &&
-                v.is_ex_member !== true
+                v.is_ex_member !== true,
             )
             .map((v) => ({
               id: v.student_id,
@@ -73,7 +74,7 @@ export default function Tirocini() {
           const selected = data.volunteers.filter(
             (v) =>
               v.traineeship_status === "ongoing" ||
-              v.traineeship_status === "completed"
+              v.traineeship_status === "completed",
           );
           setWithTirocinio(selected);
         } else {
@@ -139,7 +140,7 @@ export default function Tirocini() {
                       "Content-Type": "application/json",
                       Authorization: `Bearer ${token}`,
                     },
-                  }
+                  },
                 );
                 const n = await volunteer.json();
                 const vol = n.volunteer;
@@ -163,7 +164,7 @@ export default function Tirocini() {
                       Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify(vol),
-                  }
+                  },
                 );
                 if (response.ok) {
                   alert("Tirocinio aggiornato con successo!");
@@ -193,7 +194,7 @@ export default function Tirocini() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                   },
-                }
+                },
               );
               const n = await volunteer.json();
               const vol = n.volunteer;
@@ -211,7 +212,7 @@ export default function Tirocini() {
                     Authorization: `Bearer ${token}`,
                   },
                   body: JSON.stringify(vol),
-                }
+                },
               );
               if (response.ok) {
                 alert("Tirocinio rimosso con successo!");
@@ -397,7 +398,7 @@ export default function Tirocini() {
                       "Content-Type": "application/json",
                       Authorization: `Bearer ${token}`,
                     },
-                  }
+                  },
                 );
                 const n = await volunteer.json();
                 const vol = n.volunteer;
@@ -423,7 +424,7 @@ export default function Tirocini() {
                       Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify(vol),
-                  }
+                  },
                 );
                 if (response.ok) {
                   alert("Tirocinio aggiunto con successo!");

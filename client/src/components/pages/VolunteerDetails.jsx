@@ -13,7 +13,10 @@ export default function VolunteerDetails() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
-  const [isAdmin] = useOutletContext();
+  const [windowSize, setWindowSize, setSelectedVolunteerFilter, isAdmin] =
+    useOutletContext();
+
+  console.log("is admin:", isAdmin);
 
   useEffect(() => {
     const fetchVolunteer = async () => {
@@ -27,7 +30,7 @@ export default function VolunteerDetails() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       const text = await res.text(); // <- log raw response
@@ -60,7 +63,7 @@ export default function VolunteerDetails() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       const newToken = res.headers.get("X-New-Token");
       const data = await res.json();
@@ -383,8 +386,8 @@ export default function VolunteerDetails() {
           {volunteer.traineeship_status === "ongoing"
             ? "In corso"
             : volunteer.traineeship_status === "completed"
-            ? "Terminato"
-            : "Non effettuato"}
+              ? "Terminato"
+              : "Non effettuato"}
         </p>
         {(volunteer.traineeship_status === "ongoing" ||
           volunteer.traineeship_status === "completed") && (
