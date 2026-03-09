@@ -20,7 +20,10 @@ export default function Volunteers() {
   const [volunteers, setVolunteers] = useState([]);
   const [filteredVolunteers, setFilteredVolunteers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTeam, setSelectedTeam] = useState("");
+  const [selectedTeam, setSelectedTeam] = useState(
+    localStorage.getItem("selectedTeam") || ""
+  );
+  
   const [showExSocio, setShowExSocio] = useState(false);
   const token = localStorage.getItem("access_token");
 
@@ -89,10 +92,17 @@ export default function Volunteers() {
           });
 
           setVolunteers(data.all_volunteers);
-          const active = data.all_volunteers.filter(
+          
+          let initialFiltered = data.all_volunteers.filter(
             (v) => v.is_ex_member !== true && v.is_ex_member !== "Si",
           );
-          setFilteredVolunteers(active);
+
+          const savedTeam = localStorage.getItem("selectedTeam") || "";
+          if (savedTeam) {
+            initialFiltered = initialFiltered.filter((v) => v.team === savedTeam);
+          }
+
+          setFilteredVolunteers(initialFiltered);
 
           // save volunteers to localStorage
           localStorage.setItem("volunteers", JSON.stringify(data.volunteers));
@@ -116,6 +126,9 @@ export default function Volunteers() {
   const handleChipClick = (team) => {
     const newTeam = team === selectedTeam ? "" : team;
     setSelectedTeam(newTeam);
+    
+    localStorage.setItem("selectedTeam", newTeam);
+    
     filterVolunteers(searchTerm, newTeam, showExSocio);
   };
 
